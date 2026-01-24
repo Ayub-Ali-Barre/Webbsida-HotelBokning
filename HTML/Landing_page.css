@@ -1,0 +1,19 @@
+body{
+    background-color: rgba(22, 25, 38, 1);
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    display: inline-block;
+}
+
+.header{
+    background-color: rgba(237, 190, 102, 1);
+}
+.header-content {
+    display: flex;
+    align-items: end;
+    padding: 10px 20px;
+}
+
