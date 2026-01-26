@@ -9,7 +9,7 @@ p {
 }
 
 .header{
-    background-color: rgba(237, 190, 102, 1);
+    background-color: red;
 }
 .header-content {
     display: flex;
