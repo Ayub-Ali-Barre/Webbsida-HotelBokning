@@ -1,0 +1,61 @@
+Body{
+    background-color: rgba(22, 25, 38, 1);
+    padding: 0;
+    margin: 0;
+}
+
+.form-container{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20%;
+}
+
+
+
+p {
+    display: inline-block;
+    padding: 5px
+}
+
+.logo{
+    display: inline-block;
+    text-align: left;
+}
+
+.booking-content {
+    display: inline-block;
+    width: 250px;
+    left: 100%;
+    margin-right: 0px;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    padding: 10px 16px;
+    background-color: rgba(237, 190, 102, 1);
+    
+}
+
+.header-buttons{
+    display: inline-block;
+    width: 160px;
+    margin-right: 0px;
+}
+
+
+.sign-header-button{
+    border-radius: 8px;
+    padding: 6px;
+    color: black;
+    background-color: white;
+
+}
+
+.register-header-button{
+    border-radius: 8px;
+    padding: 6px;
+    color: white;
+    background-color: black;
+}
