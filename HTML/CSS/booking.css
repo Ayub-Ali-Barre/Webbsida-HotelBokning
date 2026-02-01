@@ -1,0 +1,139 @@
+body{
+    background-color: rgba(22, 25, 38, 1);
+    padding: 0;
+    margin: 0;
+}
+
+
+p {
+    display: inline-block;
+    padding: 5px
+}
+
+.logo{
+    display: inline-block;
+    text-align: left;
+}
+
+.booking-content {
+    display: inline-block;
+    width: 250px;
+    left: 100%;
+    margin-right: 0px;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    padding: 10px 16px;
+    background-color: rgba(237, 190, 102, 1);
+    
+}
+
+.header-buttons{
+    display: inline-block;
+    width: 160px;
+    margin-right: 0px;
+}
+
+
+.sign-header-button{
+    border-radius: 8px;
+    padding: 6px;
+    color: black;
+    background-color: white;
+
+}
+
+.register-header-button{
+    border-radius: 8px;
+    padding: 6px;
+    color: white;
+    background-color: black;
+}
+
+
+.hotel-picture {
+    display:inline-block;
+    left:30%;
+}
+
+.pic {
+    width: 300px;
+    height: 300px;
+}
+
+.hotel-content{
+    display: inline-block;
+    width: 500px;
+    right: 50%;
+    color: white
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    width: 300px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modal-content h2 {
+   margin-bottom: 15px;
+}
+
+.modal-content label {
+   display: block;
+   margin-top: 10px;
+   text-align: left;
+}
+
+.modal-content input,
+.modal-content select {
+   width: 100%;
+   padding: 6px;
+   margin-top: 5px;
+}
+
+.modal-buttons {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 20px;
+}
+
+.confirm-btn {
+   background-color: green;
+   color: white;
+   border: none;
+   padding: 8px 12px;
+   cursor: pointer;
+   border-radius: 4px;
+}
+
+.cancel-btn {
+   background-color: red;
+   color: white;
+   border: none;
+   padding: 8px 12px;
+   cursor: pointer;
+   border-radius: 4px;
+}
+
+.confirm-btn:hover {
+   background-color: darkgreen;
+}
+
+.cancel-btn:hover {
+   background-color: darkred;
+}
