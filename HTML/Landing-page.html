@@ -11,50 +11,80 @@
         <div class = "header-content">
 
             <div class = "logo">
-                <p>
-                company name    
-                <p>
-            </div>        
+                <p>company name</p>
+            </div>  
+
             <div class = "booking-content">
-                <p>
-                    Booking
-                </p>
-                   <p>
-                    See Rooms
-                </p>
-                   <p>
-                    Contact
-                </p>
+                <p>Booking</p>
+                <p>See Rooms</p>
+                <p>Contact</p>
             </div>
+
             <div class = "header-buttons">
                 <button class = "sign-header-button"> Sign in </button>
-               <button class = "register-header-button"> Register </button>
+                <button class = "register-header-button"> Register </button>
             </div>
         </div>
        </div> 
        
        <div class = "top-content">
         <div class = "top-name">
-            <p>
-                Company Name
-            </p>
+            <p>Company Name</p>
+            <div class="top-subtitle">We make booking easy</div>
         </div>
-        <div class = "Search-Form">
+
+        <div class = "search-form">
             <form>
-              <label for="destination">Destination:</label><br>
-              <input type="text" id="destination" name="destination"><br><br>
+              <label for="destination">Destination:</label>
+              <input type="text" id="destination" name="destination" placeholder="Where to?">
 
-              <label for="checkin">Check-In:</label><br>
-              <input type="date" id="checkin" name="checkin"><br><br>
+              <label for="checkin">Check-In:</label>
+              <input type="date" id="checkin" name="checkin">
 
-              <label for="checkout">Check-Out:</label><br>
+              <label for="checkout">Check-Out:</label>
               <input type="date" id="checkout" name="checkout"><br><br>
 
               <label for="guests">Guests:</label><br>
-              <input type="number" id="guests" name="guests" min="1">
-            </form>
+              <input type="number" id="guests" name="guests" min="1" value="2">
 
+              <button class="search-button" type="submit">Search</button>
+            </form>
         </div>
        </div>
+
+       <!-- Image strip under hero -->
+         <div class="hero-image-strip"></div>
+
+         <!-- FOOTER-ish -->
+      <footer class="footer">
+        <div class="container footer-grid">
+          <div>
+            <div class="footer-brand">HotelBooking</div>
+            <div class="footer-muted">Simple booking system for guests and admins.</div>
+          </div>
+
+          <div>
+            <div class="footer-title">Use cases</div>
+            <a class="footer-link" href="#">Booking</a>
+            <a class="footer-link" href="#">Manage reservations</a>
+            <a class="footer-link" href="#">Admin dashboard</a>
+          </div>
+
+          <div>
+            <div class="footer-title">Explore</div>
+            <a class="footer-link" href="#">Rooms</a>
+            <a class="footer-link" href="#">Destinations</a>
+            <a class="footer-link" href="#">Pricing</a>
+          </div>
+
+          <div>
+            <div class="footer-title">Resources</div>
+            <a class="footer-link" href="#">Support</a>
+            <a class="footer-link" href="#">Docs</a>
+            <a class="footer-link" href="#">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
