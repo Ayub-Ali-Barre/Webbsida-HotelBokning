@@ -9,7 +9,6 @@
   --text-dim: rgba(245, 230, 204, 0.6);
 }
 
-/* --- Reset & Base --- */
 * {
   margin: 0;
   padding: 0;
@@ -38,7 +37,6 @@ h1, h2, h3, .logo {
   display: block;
 }
 
-/* --- Navigation --- */
 .nav {
   position: fixed;
   top: 0;
