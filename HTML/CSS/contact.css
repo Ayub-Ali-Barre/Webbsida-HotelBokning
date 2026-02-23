@@ -94,7 +94,6 @@ h1, h2, h3, .logo {
 .btn-gold { background: var(--secondary); color: var(--primary); }
 .btn-outline { border: 1px solid var(--secondary); color: var(--secondary); background: transparent; }
 
-/* --- Contact Grid --- */
 .contact-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -162,7 +161,6 @@ h1, h2, h3, .logo {
   border-color: var(--secondary);
 }
 
-/* --- Info Section --- */
 .contact-info-section {
   background: var(--muted);
   padding: 6rem 4rem;
@@ -226,7 +224,6 @@ h1, h2, h3, .logo {
   opacity: 0.6;
 }
 
-/* --- Footer --- */
 .footer {
   background: var(--muted);
   padding: 5rem 4rem;

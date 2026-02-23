@@ -41,7 +41,6 @@ h1, h2, h3, .logo {
   display: block;
 }
 
-/* --- Navigation --- */
 .nav {
   position: sticky;
   top: 0;
@@ -103,7 +102,6 @@ h1, h2, h3, .logo {
   color: var(--secondary);
 }
 
-/* --- Page Header --- */
 .page-header {
   padding: 6rem 0 4rem;
   text-align: center;
@@ -126,7 +124,6 @@ h1, h2, h3, .logo {
   margin: 0 auto;
 }
 
-/* --- Filter Bar --- */
 .filter-bar {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);

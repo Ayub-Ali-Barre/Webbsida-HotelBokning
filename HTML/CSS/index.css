@@ -121,7 +121,6 @@ h1, h2, h3, .logo {
   color: var(--primary);
 }
 
-/* --- Hero Section --- */
 .hero {
   height: 85vh;
   display: flex;
@@ -153,7 +152,6 @@ h1, h2, h3, .logo {
   max-width: 600px;
 }
 
-/* --- Search Bar --- */
 .search {
   background: var(--glass);
   padding: 0.5rem;
@@ -173,7 +171,6 @@ h1, h2, h3, .logo {
   outline: none;
 }
 
-/* --- Content Sections --- */
 .section {
   max-width: 1200px;
   margin: 6rem auto;
@@ -187,7 +184,6 @@ h1, h2, h3, .logo {
   margin-bottom: 3rem;
 }
 
-/* --- Hotel Cards Grid --- */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -245,7 +241,6 @@ h1, h2, h3, .logo {
   margin-bottom: 1.5rem;
 }
 
-/* --- Footer --- */
 .footer {
   background: var(--muted);
   padding: 5rem 4rem;
