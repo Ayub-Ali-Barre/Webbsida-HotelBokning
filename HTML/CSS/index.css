@@ -85,7 +85,6 @@ h1, h2, h3, .logo {
   gap: 1rem;
 }
 
-/* --- Buttons --- */
 .btn {
   padding: 0.8rem 2rem;
   text-transform: uppercase;
@@ -119,6 +118,11 @@ h1, h2, h3, .logo {
 .btn-outline:hover {
   background: var(--secondary);
   color: var(--primary);
+}
+
+.nav_button{
+  display: inline-block;
+  margin: 0;
 }
 
 .hero {
