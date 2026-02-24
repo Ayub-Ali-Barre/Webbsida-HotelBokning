@@ -1,62 +1,158 @@
-Body{
-    background-color: rgba(22, 25, 38, 1);
-    padding: 0;
-    margin: 0;
+:root {
+  --primary: #161926;
+  --secondary: #EDBE66;
+  --accent: #F5E6CC;
+  --muted: #2A2E3D;
+  --glass: rgba(22, 25, 38, 0.9);
+  --glass-dark: rgba(22, 25, 38, 0.95);
+  --border: rgba(237, 190, 102, 0.15);
+  --text-dim: rgba(245, 230, 204, 0.6);
 }
 
-.form-container{
-  max-width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary);
   color: white;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-
-
-p {
-    display: inline-block;
-    padding: 5px
+h1, h2, h3, .logo {
+  font-family: 'Playfair Display', serif;
 }
 
-.logo{
-    display: inline-block;
-    text-align: left;
+.label {
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.booking-content {
-    display: inline-block;
-    width: 250px;
-    left: 100%;
-    margin-right: 0px;
+.btn {
+  padding: 0.8rem 2rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
-.header {
-    position: sticky;
-    top: 0;
-    padding: 10px 16px;
-    background-color: rgba(237, 190, 102, 1);
-    
+.btn-gold {
+  background: var(--secondary);
+  color: var(--primary);
 }
 
-.header-buttons{
-    display: inline-block;
-    width: 160px;
-    margin-right: 0px;
+.btn-gold:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
-
-.sign-header-button{
-    border-radius: 8px;
-    padding: 6px;
-    color: black;
-    background-color: white;
-
+.auth-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  padding: 1rem;
 }
 
-.register-header-button{
-    border-radius: 8px;
-    padding: 6px;
-    color: white;
-    background-color: black;
+.auth-page.register {
+  background-image: linear-gradient(rgba(22, 25, 38, 0.8), rgba(22, 25, 38, 0.8)), 
+                   url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1920&q=80');
+}
+
+.auth-card {
+  background: var(--glass-dark);
+  backdrop-filter: blur(15px);
+  width: 100%;
+  max-width: 450px;
+  padding: 3rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.auth-card .logo {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  display: block;
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-decoration: none;
+}
+
+.auth-card .title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--secondary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-switch {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.auth-switch .link {
+  color: var(--secondary);
+  text-transform: none;
+  font-weight: bold;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.btn-back {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  color: var(--secondary);
+  text-decoration: none;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+  .auth-card { padding: 2rem; }
 }
