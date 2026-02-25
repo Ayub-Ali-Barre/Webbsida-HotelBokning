@@ -98,6 +98,7 @@ h1, h2, h3, .logo {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   min-height: 85vh;
+  
 }
 
 .contact-form-section {
