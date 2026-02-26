@@ -1,0 +1,249 @@
+/* Base*/
+* {
+    box-sizing: border-box;
+}
+
+body{
+    background-color: rgba(22, 25, 38, 1);
+    padding: 0;
+    margin: 0;
+    font-family: 'Arial', Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+
+p {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+
+/*.logo{
+    display: inline-block;
+    text-align: left;
+}
+
+
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: rgba(237, 190, 102, 1);
+    z-index: 10;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    padding: 10px 0px;
+}
+*/
+.header-buttons{
+    display: flex;
+    gap: 8px;
+}
+
+
+/*Left: Logo*/
+.logo p{
+    color: #111;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+/*Middle:  nav links*/
+.booking-content {
+    display: flex;
+    gap: 18px;
+}
+
+.booking-content p{
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.booking-content p:hover{
+    text-decoration: underline;
+}
+
+.sign-header-button{
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: black;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.register-header-button{
+   border-radius: 8px;
+    padding: 7px 10px;
+    color: black;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+
+/*Hero top*/
+.top-content{
+    max-width: 980px;
+    margin: 0 auto;
+    background: #121826;   /* dark navy like screenshot */
+    text-align: center;
+    padding: 70px 16px  50px;
+}
+
+/*Title*/
+.top-name {
+    margin-bottom: 22px;
+}
+
+.top-name p{
+    font-size: 56px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.top-subtitle {
+    margin-top: 6px;
+    color: #7c8596;
+    font-weight: 600;
+}
+
+/* Search Form Card*/
+.Search-Form{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.Search-Form {
+    width: min(520px, 92%);
+    text-align: left;
+
+    background-color: rgba(20, 24, 33, 0.55);
+    border: 1px, solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 16px;
+
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+
+    display: grid;
+    gap: 10px;
+}
+
+.search-form label{
+  font-size: 12px;
+  color: #aab2c3;
+  font-weight: 700;
+}
+
+.search-form input{
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.06);
+  color: #eaeaea;
+  outline: none;
+}
+
+.Search-Form input::placeholder{
+  color: #8c94a4
+}
+
+.search-form input[type="date"]{
+ color-scheme: dark;  /* keeps date picker dark */
+}
+
+.search-button{
+    margin-top: 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-weight: 800;
+    background: #2b2f3b;
+    color: #fff;
+}
+
+/* HERO IMAGE STRIP (under top-content) */
+.hero-image-strip{
+    max-width: 980px;
+    margin: 0 auto;
+    height: 170px;
+
+    background: linear-gradient(to top, rgba(18,24,38,0.95), rgba(18,24,38,0.15)),
+    url("https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1600&q=60");
+  background-size: cover;
+  background-position: center;;
+}
+
+/* FOOTER */
+.footer {
+    max-width: 980px;
+    margin: 0 auto 60px;
+    background: #121826;
+    padding: 26px 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 18px;
+}
+
+.footer-brand {
+   font-weight: 900;
+   margin-bottom: 6px;
+}
+
+.footer-muted {
+    color: #9aa4b6;
+    font-size: 13px;
+}
+
+.footer-title {
+    font-weight: 800;
+    margin-bottom: 8px;
+
+}
+
+.footer-link {
+    display: block;
+    color: #9aa4b6;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 6px 0;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 769px){
+    .top-name p{font-size: 10px;}
+    .footer-grid {grid-template-columns: 1fr;}
+}
+
+@media (max-width: 520px){
+    .booking-content{gap: 10px;}
+    .footer-grid{ grid-template-columns: 1fr;}
+}
