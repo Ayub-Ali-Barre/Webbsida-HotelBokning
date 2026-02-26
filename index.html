@@ -25,8 +25,12 @@
       <h1 class="title">Refined <span>Luxury</span></h1>
       <p class="sub">Curated collections of the world's most exquisite stays, tailored to your journey.</p>
       <div class="search">
-        <input type="text" placeholder="Destination" class="input">
-        <input type="text" placeholder="Travel Dates" class="input">
+        <input id="destination" list="cities" type="text" placeholder="Destination" class="input" autocomplete="off">
+        <datalist id="cities">
+          <!-- options will be populated dynamically via JS (teleport API) -->
+        </datalist>
+
+        <input id="travel" type="text" placeholder="Travel Dates" class="input">
         <button class="btn btn-gold">Search</button>
       </div>
     </header>
