@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel | Aurora Grand Hotels</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/hotel.css" />
+  </head>
+
+  <body>
+    <nav class="nav">
+      <a href="index.html" class="logo">Aurora</a>
+      <div class="menu">
+        <a href="hotels.html" class="link">Hotels</a>
+        <a href="contact.html" class="link">Contact</a>
+      </div>
+      <div class="nav_buttons">
+        <a href="login.html" class="btn btn-outline">Sign In</a>
+        <a href="register.html" class="btn btn-outline">Register</a>
+      </div>
+    </nav>
+
+    <header class="page-header">
+      <div class="container">
+        <span class="label" id="hotelCategory">Hotel</span>
+        <h1 class="title" id="hotelName">Loading...</h1>
+        <p class="sub" id="hotelLocation"></p>
+      </div>
+    </header>
+
+    <main class="section container">
+      <article class="card" style="max-width: 980px; margin: 0 auto">
+        <img id="hotelImage" class="card-img" alt="" />
+
+        <div class="card-body">
+          <div class="card-row">
+            <h3 class="card-name" style="margin: 0">About this stay</h3>
+            <span class="card-price" id="hotelPrice"></span>
+          </div>
+
+          <p class="card-text" id="hotelDescription"></p>
+
+          <h4 style="margin: 1.5rem 0 0.75rem">Amenities</h4>
+          <ul
+            id="amenitiesList"
+            style="margin: 0 0 1.5rem 1.2rem; color: rgba(255, 255, 255, 0.75)"
+          ></ul>
+
+          <button
+            id="openBooking"
+            class="btn btn-outline"
+            style="width: 100%; padding: 1rem"
+          >
+            Book Room
+          </button>
+        </div>
+      </article>
+    </main>
+
+    <!-- Modal (samma id:n som i booking.js för att göra det enkelt) -->
+    <div id="bookingModal" class="modal">
+      <div class="modal-content">
+        <h2>Book a Room</h2>
+
+        <label for="bookingDate">Select Date</label>
+        <input type="date" id="bookingDate" />
+
+        <label for="roomSelect">Select Room</label>
+        <select id="roomSelect">
+          <option value="">Choose a room</option>
+          <option value="single">Single Room</option>
+          <option value="double">Double Room</option>
+          <option value="suite">Suite</option>
+        </select>
+
+        <div class="modal-buttons">
+          <button id="confirmBooking" class="confirm-btn">Confirm</button>
+          <button id="cancelBooking" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="JS/hotel.js"></script>
+  </body>
+</html>
