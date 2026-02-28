@@ -78,6 +78,21 @@
           <option value="suite">Suite</option>
         </select>
 
+        <!-- Success Modal -->
+        <div id="successModal" class="modal" style="display: none">
+          <div class="modal-content">
+            <h2>Booking confirmed ✅</h2>
+            <p
+              id="successText"
+              style="color: rgba(255, 255, 255, 0.75); line-height: 1.6"
+            ></p>
+
+            <div class="modal-buttons">
+              <button id="closeSuccess" class="confirm-btn">Close</button>
+            </div>
+          </div>
+        </div>
+
         <div class="modal-buttons">
           <button id="confirmBooking" class="confirm-btn">Confirm</button>
           <button id="cancelBooking" class="cancel-btn">Cancel</button>

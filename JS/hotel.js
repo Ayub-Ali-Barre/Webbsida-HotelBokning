@@ -12,35 +12,52 @@ function findHotelById(id) {
 function renderHotel(hotel) {
   document.title = `${hotel.name} | Aurora Grand Hotels`;
 
-  document.getElementById("hotelCategory").textContent = hotel.category || "Hotel";
-  document.getElementById("hotelName").innerHTML = `The <span>Aurora</span> Experience: ${hotel.name}`;
-  document.getElementById("hotelLocation").textContent = hotel.location || "";
-
+  const categoryEl = document.getElementById("hotelCategory");
+  const nameEl = document.getElementById("hotelName");
+  const locationEl = document.getElementById("hotelLocation");
   const img = document.getElementById("hotelImage");
-  img.src = hotel.image;
-  img.alt = hotel.name;
-
-  document.getElementById("hotelPrice").textContent = `$${hotel.pricePerNight} / night`;
-  document.getElementById("hotelDescription").textContent = hotel.description || "";
-
+  const priceEl = document.getElementById("hotelPrice");
+  const descEl = document.getElementById("hotelDescription");
   const list = document.getElementById("amenitiesList");
-  list.innerHTML = "";
-  (hotel.amenities || []).forEach((a) => {
-    const li = document.createElement("li");
-    li.textContent = a;
-    list.appendChild(li);
-  });
+
+  if (categoryEl) categoryEl.textContent = hotel.category || "Hotel";
+  if (nameEl) nameEl.innerHTML = `The <span>Aurora</span> Experience: ${hotel.name}`;
+  if (locationEl) locationEl.textContent = hotel.location || "";
+
+  if (img) {
+    img.src = hotel.image;
+    img.alt = hotel.name;
+  }
+
+  if (priceEl) priceEl.textContent = `$${hotel.pricePerNight} / night`;
+  if (descEl) descEl.textContent = hotel.description || "";
+
+  if (list) {
+    list.innerHTML = "";
+    (hotel.amenities || []).forEach((a) => {
+      const li = document.createElement("li");
+      li.textContent = a;
+      list.appendChild(li);
+    });
+  }
 }
 
 function showNotFound() {
-  document.getElementById("hotelName").textContent = "Hotel not found";
-  document.getElementById("hotelLocation").textContent = "Please go back to Hotels and select a valid stay.";
+  const nameEl = document.getElementById("hotelName");
+  const locationEl = document.getElementById("hotelLocation");
   const mainImg = document.getElementById("hotelImage");
-  mainImg.style.display = "none";
-  document.getElementById("hotelPrice").textContent = "";
-  document.getElementById("hotelDescription").textContent = "";
-  document.getElementById("amenitiesList").innerHTML = "";
-  document.getElementById("openBooking").disabled = true;
+  const priceEl = document.getElementById("hotelPrice");
+  const descEl = document.getElementById("hotelDescription");
+  const amenities = document.getElementById("amenitiesList");
+  const openBtn = document.getElementById("openBooking");
+
+  if (nameEl) nameEl.textContent = "Hotel not found";
+  if (locationEl) locationEl.textContent = "Please go back to Hotels and select a valid stay.";
+  if (mainImg) mainImg.style.display = "none";
+  if (priceEl) priceEl.textContent = "";
+  if (descEl) descEl.textContent = "";
+  if (amenities) amenities.innerHTML = "";
+  if (openBtn) openBtn.disabled = true;
 }
 
 function initBookingModal(hotel) {
@@ -49,24 +66,32 @@ function initBookingModal(hotel) {
   const cancelBtn = document.getElementById("cancelBooking");
   const confirmBtn = document.getElementById("confirmBooking");
 
-  openBtn.addEventListener("click", () => {
-    modal.style.display = "flex";
-  });
+  if (openBtn && modal) {
+    openBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
+  }
 
-  cancelBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
+  if (cancelBtn && modal) {
+    cancelBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  if (!confirmBtn) return;
 
   confirmBtn.addEventListener("click", () => {
-    const date = document.getElementById("bookingDate").value;
-    const room = document.getElementById("roomSelect").value;
+    const dateInput = document.getElementById("bookingDate");
+    const roomSelect = document.getElementById("roomSelect");
+    const date = dateInput ? dateInput.value : "";
+    const room = roomSelect ? roomSelect.value : "";
 
     if (!date || !room) {
       alert("Please select a date and a room.");
       return;
     }
 
-    // sparar i localStorage (frontend-only, tills backend är klar)
+    // Save to localStorage (frontend-only until backend is ready)
     const booking = {
       hotelId: hotel.id,
       hotelName: hotel.name,
@@ -76,13 +101,33 @@ function initBookingModal(hotel) {
     };
     localStorage.setItem("latestBooking", JSON.stringify(booking));
 
-    alert(`Booking confirmed!\nHotel: ${hotel.name}\nDate: ${date}\nRoom: ${room}`);
-    modal.style.display = "none";
-  });
+    if (modal) modal.style.display = "none";
 
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
+    const successModal = document.getElementById("successModal");
+    const successText = document.getElementById("successText");
+    const closeSuccess = document.getElementById("closeSuccess");
+
+    if (successText) {
+      successText.innerHTML =
+        `Hotel: <b>${hotel.name}</b><br>` +
+        `Date: <b>${date}</b><br>` +
+        `Room: <b>${room}</b>`;
+    }
+
+    if (successModal) successModal.style.display = "flex";
+
+    if (closeSuccess && successModal) {
+      closeSuccess.onclick = () => {
+        successModal.style.display = "none";
+      };
+    }
+
+    if (successModal) {
+      window.addEventListener("click", (e) => {
+        if (e.target === successModal) {
+          successModal.style.display = "none";
+        }
+      });
     }
   });
 }
