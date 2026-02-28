@@ -300,6 +300,16 @@ function initBookingModal(hotel) {
         closeModal(successModal);
       };
     }
+
+    // view bookings button
+    const viewBookingsBtn = document.getElementById('viewBookings');
+    if (viewBookingsBtn) {
+      viewBookingsBtn.onclick = () => {
+        // close modal and navigate
+        closeModal(successModal);
+        window.location.href = 'bookings.html';
+      };
+    }
   });
 }
 

@@ -35,6 +35,13 @@ function createCard(b) {
   viewBtn.className = 'btn small-btn';
   viewBtn.textContent = 'View';
 
+  const detailsLink = document.createElement('a');
+  detailsLink.className = 'btn small-btn';
+  detailsLink.style.marginLeft = '0.6rem';
+  detailsLink.textContent = 'Open';
+  detailsLink.href = `booking.html?id=${encodeURIComponent(b.id)}`;
+  detailsLink.setAttribute('role', 'link');
+
   const delBtn = document.createElement('button');
   delBtn.className = 'btn small-btn';
   delBtn.style.marginLeft = '0.6rem';
@@ -58,6 +65,7 @@ function createCard(b) {
   });
 
   actions.appendChild(viewBtn);
+  actions.appendChild(detailsLink);
   actions.appendChild(delBtn);
 
   el.appendChild(top);

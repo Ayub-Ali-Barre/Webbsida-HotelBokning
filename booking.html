@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Detail — Aurora Grand Hotels</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/hotel.css" />
+    <style>
+      .detail-card {
+        max-width: 720px;
+        margin: 1.5rem auto;
+        padding: 1.25rem;
+        border-radius: 12px;
+      }
+      .meta-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .muted {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="index.html" class="logo">Aurora</a>
+      <div class="menu">
+        <a href="hotels.html" class="link">Hotels</a>
+        <a href="contact.html" class="link">Contact</a>
+        <a href="bookings.html" class="link">My Bookings</a>
+      </div>
+      <div class="nav_buttons">
+        <a href="login.html" class="btn btn-outline">Sign In</a>
+        <a href="register.html" class="btn btn-outline">Register</a>
+      </div>
+    </nav>
+
+    <main class="section container">
+      <article id="detailCard" class="card detail-card">
+        <div
+          id="notFound"
+          style="display: none; padding: 1rem; color: var(--muted)"
+        >
+          Booking not found.
+        </div>
+        <div id="detailContent" style="display: none">
+          <h2 id="dHotel" class="title"></h2>
+          <div class="meta-row">
+            <div class="muted">Check-in: <span id="dCheckin"></span></div>
+            <div class="muted">Check-out: <span id="dCheckout"></span></div>
+            <div class="muted">Nights: <span id="dNights"></span></div>
+          </div>
+          <p id="dRoom" style="margin-top: 0.8rem"></p>
+          <div style="margin-top: 1rem; display: flex; gap: 0.75rem">
+            <button id="cancelBookingBtn" class="btn cancel-btn">
+              Cancel Booking
+            </button>
+            <a id="backToList" href="bookings.html" class="btn btn-outline"
+              >Back to bookings</a
+            >
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <script type="module" src="JS/booking-detail.js"></script>
+  </body>
+</html>
