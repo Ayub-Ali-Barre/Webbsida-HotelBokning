@@ -9,64 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="CSS/hotel.css" />
-    <style>
-      /* small page-specific tweaks */
-      .bookings-list {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: 1fr;
-        margin-top: 1rem;
-      }
-      .booking-card {
-        padding: 1rem;
-        border-radius: 12px;
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.02),
-          rgba(255, 255, 255, 0.01)
-        );
-        border: 1px solid rgba(255, 255, 255, 0.04);
-      }
-      .booking-card.highlight {
-        box-shadow: 0 8px 28px rgba(212, 175, 55, 0.12);
-        transform: translateY(-4px);
-        border-color: rgba(212, 175, 55, 0.18);
-      }
-      .booking-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-      .booking-meta {
-        color: var(--muted);
-        font-size: 0.95rem;
-      }
-      .small-btn {
-        padding: 0.45rem 0.7rem;
-        border-radius: 10px;
-        font-size: 0.82rem;
-      }
-      #snackbar {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 20px;
-        background: rgba(25, 25, 25, 0.96);
-        color: #fff;
-        padding: 0.8rem 1rem;
-        border-radius: 10px;
-        display: none;
-        align-items: center;
-        gap: 0.75rem;
-        z-index: 999;
-      }
-      #snackbar button {
-        background: rgba(212, 175, 55, 0.14);
-        border: 1px solid rgba(212, 175, 55, 0.35);
-        color: var(--text);
-      }
-    </style>
+    <link rel="stylesheet" href="CSS/bookings.css" />
   </head>
   <body>
     <nav class="nav">

@@ -108,13 +108,28 @@ function removeBookingWithUndo(id) {
   renderList();
   showSnack('Booking deleted', () => {
     // undo
-    const cur = loadBookings();
-    cur.push(lastDeleted);
-    // sort by createdAt
-    cur.sort((a,b) => (new Date(b.createdAt) - new Date(a.createdAt)));
-    saveBookings(cur);
-    lastDeleted = null;
-    renderList();
+      const cur = loadBookings();
+      cur.push(lastDeleted);
+      // sort by createdAt (newest first)
+      cur.sort((a,b) => (new Date(b.createdAt) - new Date(a.createdAt)));
+      saveBookings(cur);
+      // re-render and then focus + highlight the restored card
+      const restoredId = lastDeleted.id;
+      lastDeleted = null;
+      renderList();
+      // small delay to ensure DOM updated
+      setTimeout(() => {
+        const node = document.querySelector(`[data-id="${restoredId}"]`);
+        if (node) {
+          node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          node.classList.add('highlight');
+          // focus the first interactive element inside the card (prefer buttons/links)
+          const focusable = node.querySelector('button, a, [tabindex]');
+          if (focusable && typeof focusable.focus === 'function') focusable.focus();
+          // remove highlight after a short duration
+          setTimeout(() => node.classList.remove('highlight'), 4000);
+        }
+      }, 120);
   });
 }
 
@@ -148,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (node) {
         node.scrollIntoView({ behavior: 'smooth', block: 'center' });
         node.classList.add('highlight');
-        setTimeout(() => node.classList.remove('highlight'), 3000);
+        setTimeout(() => node.classList.remove('highlight'), 4000);
       }
     }, 250);
   }
