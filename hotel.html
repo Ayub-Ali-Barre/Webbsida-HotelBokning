@@ -63,9 +63,16 @@
     </main>
 
     <!-- Modal (samma id:n som i booking.js för att göra det enkelt) -->
-    <div id="bookingModal" class="modal">
+    <div
+      id="bookingModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="bookingTitle"
+      aria-hidden="true"
+    >
       <div class="modal-content">
-        <h2>Book a Room</h2>
+        <h2 id="bookingTitle">Book a Room</h2>
 
         <div class="grid-2">
           <div>
@@ -107,9 +114,17 @@
         </div>
 
         <!-- Success Modal -->
-        <div id="successModal" class="modal" style="display: none">
+        <div
+          id="successModal"
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="successTitle"
+          aria-hidden="true"
+          style="display: none"
+        >
           <div class="modal-content">
-            <h2>Booking confirmed ✅</h2>
+            <h2 id="successTitle">Booking confirmed ✅</h2>
             <p
               id="successText"
               style="color: rgba(255, 255, 255, 0.75); line-height: 1.6"

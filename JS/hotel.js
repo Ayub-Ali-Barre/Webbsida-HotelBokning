@@ -68,13 +68,13 @@ function initBookingModal(hotel) {
 
   if (openBtn && modal) {
     openBtn.addEventListener("click", () => {
-      modal.style.display = "flex";
+      openModal(modal);
     });
   }
 
   if (cancelBtn && modal) {
     cancelBtn.addEventListener("click", () => {
-      modal.style.display = "none";
+      closeModal(modal);
     });
   }
 
@@ -99,6 +99,76 @@ function initBookingModal(hotel) {
     double: 1.4,
     suite: 2.2,
   };
+
+  // Focus trap helpers and accessible open/close
+  let lastFocused = null;
+  let currentOpenModal = null;
+
+  const getFocusable = (root) => {
+    if (!root) return [];
+    const selectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll(selectors)).filter((el) => el.offsetParent !== null);
+  };
+
+  const trapKey = (e) => {
+    if (!currentOpenModal) return;
+    const focusables = getFocusable(currentOpenModal);
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal(currentOpenModal);
+      return;
+    }
+    if (e.key === 'Tab') {
+      if (!focusables.length) {
+        e.preventDefault();
+        return;
+      }
+      const idx = focusables.indexOf(document.activeElement);
+      if (e.shiftKey) {
+        // shift+tab
+        if (idx === 0 || document.activeElement === currentOpenModal) {
+          e.preventDefault();
+          focusables[focusables.length - 1].focus();
+        }
+      } else {
+        // tab
+        if (idx === focusables.length - 1) {
+          e.preventDefault();
+          focusables[0].focus();
+        }
+      }
+    }
+  };
+
+  function openModal(el) {
+    if (!el) return;
+    lastFocused = document.activeElement;
+    el.style.display = 'flex';
+    el.setAttribute('aria-hidden', 'false');
+    currentOpenModal = el;
+    const focusables = getFocusable(el);
+    if (focusables.length) focusables[0].focus();
+    document.addEventListener('keydown', trapKey);
+    // close when clicking on backdrop
+    el.addEventListener('click', onBackdropClick);
+  }
+
+  function closeModal(el) {
+    if (!el) return;
+    el.style.display = 'none';
+    el.setAttribute('aria-hidden', 'true');
+    currentOpenModal = null;
+    document.removeEventListener('keydown', trapKey);
+    el.removeEventListener('click', onBackdropClick);
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  function onBackdropClick(e) {
+    // if click target is the backdrop (the modal container itself), close
+    if (e.target === e.currentTarget) {
+      closeModal(e.currentTarget);
+    }
+  }
 
   const resetSummary = () => {
     if (psNight) psNight.textContent = '-';
@@ -208,7 +278,7 @@ function initBookingModal(hotel) {
     }
 
     // close booking modal and show success modal (premium UI)
-    if (modal) modal.style.display = 'none';
+    closeModal(modal);
 
     const successModal = document.getElementById('successModal');
     const successText = document.getElementById('successText');
@@ -223,20 +293,12 @@ function initBookingModal(hotel) {
         `Total paid: <b>${fmtCurrency(total)}</b>`;
     }
 
-    if (successModal) successModal.style.display = 'flex';
+    if (successModal) openModal(successModal);
 
     if (closeSuccess && successModal) {
       closeSuccess.onclick = () => {
-        successModal.style.display = 'none';
+        closeModal(successModal);
       };
-    }
-
-    if (successModal) {
-      window.addEventListener('click', (e) => {
-        if (e.target === successModal) {
-          successModal.style.display = 'none';
-        }
-      });
     }
   });
 }
