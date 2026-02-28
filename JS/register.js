@@ -23,5 +23,18 @@ document.getElementById("registerForm")
   .then(() => {
     window.location.href = "login.html";
   })
-  .catch(err => console.error(err));
+  .catch(err => {
+    // show a friendly inline message to the user and keep a debug log
+    console.error('registration failed', err);
+    let errEl = document.getElementById('registerError');
+    if (!errEl) {
+      errEl = document.createElement('div');
+      errEl.id = 'registerError';
+      errEl.style.color = 'crimson';
+      errEl.style.marginTop = '0.75rem';
+      const form = document.getElementById('registerForm');
+      if (form) form.appendChild(errEl);
+    }
+    errEl.textContent = 'Registration failed. Please try again later.';
+  });
 });

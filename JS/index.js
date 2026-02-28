@@ -151,8 +151,8 @@ function init() {
         if (!names.length) renderOptions(defaultCities);
         else renderOptions(names);
       } catch (e) {
-        // on error, keep defaults
-        console.error('city search error', e);
+        // on error, keep defaults and log a warning (not noisy)
+        console.warn('city search error', e);
         renderOptions(defaultCities);
       }
     };
