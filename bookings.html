@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Bookings — Aurora Grand Hotels</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/hotel.css" />
+    <style>
+      /* small page-specific tweaks */
+      .bookings-list {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1fr;
+        margin-top: 1rem;
+      }
+      .booking-card {
+        padding: 1rem;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .booking-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+      .booking-meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .small-btn {
+        padding: 0.45rem 0.7rem;
+        border-radius: 10px;
+        font-size: 0.82rem;
+      }
+      #snackbar {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        background: rgba(25, 25, 25, 0.96);
+        color: #fff;
+        padding: 0.8rem 1rem;
+        border-radius: 10px;
+        display: none;
+        align-items: center;
+        gap: 0.75rem;
+        z-index: 999;
+      }
+      #snackbar button {
+        background: rgba(212, 175, 55, 0.14);
+        border: 1px solid rgba(212, 175, 55, 0.35);
+        color: var(--text);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="index.html" class="logo">Aurora</a>
+      <div class="menu">
+        <a href="hotels.html" class="link">Hotels</a>
+        <a href="contact.html" class="link">Contact</a>
+      </div>
+      <div class="nav_buttons">
+        <a href="login.html" class="btn btn-outline">Sign In</a>
+        <a href="register.html" class="btn btn-outline">Register</a>
+      </div>
+    </nav>
+
+    <main class="section container">
+      <header style="text-align: center">
+        <h1 class="title">My Bookings</h1>
+        <p class="sub">
+          All bookings saved locally in your browser. You can delete or view
+          details; deleted items can be undone briefly.
+        </p>
+      </header>
+
+      <section id="bookingsArea">
+        <div
+          id="emptyMessage"
+          style="
+            display: none;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 1.5rem;
+          "
+        >
+          No bookings yet. Make a booking to see it here.
+        </div>
+        <div id="bookingsList" class="bookings-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div id="snackbar" role="status" aria-live="polite">
+      <span id="snackText"></span>
+      <button id="snackUndo" class="btn small-btn">Undo</button>
+    </div>
+
+    <script type="module" src="JS/bookings.js"></script>
+  </body>
+</html>
