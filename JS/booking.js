@@ -1,3 +1,5 @@
+import { openModal, closeModal } from './modal.js';
+
 document.addEventListener("DOMContentLoaded", function () {
   const bookButton = document.querySelector(".Book-button button");
   const modal = document.getElementById("bookingModal");
@@ -7,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!bookButton || !modal) return;
 
   bookButton.addEventListener("click", function () {
-    modal.style.display = "flex";
+    openModal(modal);
   });
 
   if (cancelBtn) {
     cancelBtn.addEventListener("click", function () {
-      modal.style.display = "none";
+      closeModal(modal);
     });
   }
 
@@ -52,14 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const successModal = document.getElementById('successModal');
       const successText = document.getElementById('successText');
       if (successText) successText.textContent = `Booking confirmed — ${ci} to ${co} (${room})`;
-      if (modal) modal.style.display = 'none';
-      if (successModal) successModal.style.display = 'flex';
+      closeModal(modal);
+      if (successModal) openModal(successModal);
     });
   }
 
-  window.addEventListener("click", function (e) {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  });
+  // backdrop click handled by modal helper; no extra handler needed here
 });
