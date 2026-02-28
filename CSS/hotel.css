@@ -379,6 +379,52 @@ img {
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* booking modal extras */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.price-summary {
+  margin-top: 0.75rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 0.7rem;
+  border-radius: 12px;
+}
+
+.price-summary .price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  color: var(--muted);
+}
+
+.price-summary .price-row strong {
+  color: var(--text);
+}
+
+.inline-error {
+  color: #ffb3b3;
+  background: rgba(255,0,0,0.03);
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* slightly larger modal for success (premium feel) */
+#successModal .modal-content {
+  width: min(640px, 96%);
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  #successModal .modal-content { padding: 1rem; }
+}
+
 /* ---------- Responsive tweaks ---------- */
 @media (max-width: 820px) {
   .nav {

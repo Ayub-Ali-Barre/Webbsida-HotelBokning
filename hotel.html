@@ -67,8 +67,16 @@
       <div class="modal-content">
         <h2>Book a Room</h2>
 
-        <label for="bookingDate">Select Date</label>
-        <input type="date" id="bookingDate" />
+        <div class="grid-2">
+          <div>
+            <label for="checkinDate">Check-in</label>
+            <input type="date" id="checkinDate" />
+          </div>
+          <div>
+            <label for="checkoutDate">Check-out</label>
+            <input type="date" id="checkoutDate" />
+          </div>
+        </div>
 
         <label for="roomSelect">Select Room</label>
         <select id="roomSelect">
@@ -77,6 +85,26 @@
           <option value="double">Double Room</option>
           <option value="suite">Suite</option>
         </select>
+
+        <div
+          id="bookingError"
+          class="inline-error"
+          role="alert"
+          aria-live="polite"
+          style="display: none"
+        ></div>
+
+        <div id="priceSummary" class="price-summary" style="margin-top: 1rem">
+          <div class="price-row">
+            <span>Price / night</span><span id="psNight">-</span>
+          </div>
+          <div class="price-row">
+            <span>Nights</span><span id="psNights">-</span>
+          </div>
+          <div class="price-row">
+            <strong>Total</strong><strong id="psTotal">-</strong>
+          </div>
+        </div>
 
         <!-- Success Modal -->
         <div id="successModal" class="modal" style="display: none">

@@ -80,52 +80,161 @@ function initBookingModal(hotel) {
 
   if (!confirmBtn) return;
 
-  confirmBtn.addEventListener("click", () => {
-    const dateInput = document.getElementById("bookingDate");
-    const roomSelect = document.getElementById("roomSelect");
-    const date = dateInput ? dateInput.value : "";
-    const room = roomSelect ? roomSelect.value : "";
+  // helpers
+  const parseDate = (v) => (v ? new Date(v + 'T00:00:00') : null);
+  const daysBetween = (a, b) => Math.round((b - a) / (1000 * 60 * 60 * 24));
+  const fmtCurrency = (n) => `$${n.toFixed(2)}`;
 
-    if (!date || !room) {
-      alert("Please select a date and a room.");
-      return;
+  const checkinInput = document.getElementById('checkinDate');
+  const checkoutInput = document.getElementById('checkoutDate');
+  const roomSelect = document.getElementById('roomSelect');
+  const bookingError = document.getElementById('bookingError');
+  const psNight = document.getElementById('psNight');
+  const psNights = document.getElementById('psNights');
+  const psTotal = document.getElementById('psTotal');
+
+  // room price multipliers
+  const ROOM_MULT = {
+    single: 1.0,
+    double: 1.4,
+    suite: 2.2,
+  };
+
+  const resetSummary = () => {
+    if (psNight) psNight.textContent = '-';
+    if (psNights) psNights.textContent = '-';
+    if (psTotal) psTotal.textContent = '-';
+  };
+
+  const validateAndUpdate = () => {
+    if (bookingError) {
+      bookingError.style.display = 'none';
+      bookingError.textContent = '';
     }
 
-    // Save to localStorage (frontend-only until backend is ready)
+    const ci = checkinInput ? parseDate(checkinInput.value) : null;
+    const co = checkoutInput ? parseDate(checkoutInput.value) : null;
+    const room = roomSelect ? roomSelect.value : '';
+
+    // basic validations
+    if (!ci || !co) {
+      resetSummary();
+      confirmBtn.disabled = true;
+      return false;
+    }
+    if (co <= ci) {
+      if (bookingError) {
+        bookingError.style.display = 'block';
+        bookingError.textContent = 'Check-out must be after check-in.';
+      }
+      resetSummary();
+      confirmBtn.disabled = true;
+      return false;
+    }
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    if (ci < today) {
+      if (bookingError) {
+        bookingError.style.display = 'block';
+        bookingError.textContent = 'Check-in cannot be in the past.';
+      }
+      resetSummary();
+      confirmBtn.disabled = true;
+      return false;
+    }
+
+    if (!room) {
+      if (bookingError) {
+        bookingError.style.display = 'block';
+        bookingError.textContent = 'Please select a room type.';
+      }
+      resetSummary();
+      confirmBtn.disabled = true;
+      return false;
+    }
+
+    // compute nights and totals
+    const nights = daysBetween(ci, co);
+    const base = hotel.pricePerNight || 0;
+    const mult = ROOM_MULT[room] || 1;
+    const perNight = base * mult;
+    const total = perNight * nights;
+
+    if (psNight) psNight.textContent = fmtCurrency(perNight);
+    if (psNights) psNights.textContent = `${nights}`;
+    if (psTotal) psTotal.textContent = fmtCurrency(total);
+
+    confirmBtn.disabled = false;
+    return {ci, co, room, nights, perNight, total};
+  };
+
+  // update summary when inputs change
+  [checkinInput, checkoutInput, roomSelect].forEach((el) => {
+    if (!el) return;
+    el.addEventListener('change', validateAndUpdate);
+  });
+
+  // initial disable
+  confirmBtn.disabled = true;
+
+  confirmBtn.addEventListener('click', () => {
+    const ok = validateAndUpdate();
+    if (!ok) return;
+
+    // ok contains booking details
+    const {ci, co, room, nights, perNight, total} = ok;
+
+    // build booking object and persist (append to 'bookings')
     const booking = {
+      id: `b_${Date.now()}`,
       hotelId: hotel.id,
       hotelName: hotel.name,
-      date,
       room,
+      checkin: ci.toISOString().slice(0,10),
+      checkout: co.toISOString().slice(0,10),
+      nights,
+      perNight,
+      total,
       createdAt: new Date().toISOString(),
     };
-    localStorage.setItem("latestBooking", JSON.stringify(booking));
 
-    if (modal) modal.style.display = "none";
+    try {
+      const existing = JSON.parse(localStorage.getItem('bookings') || '[]');
+      existing.push(booking);
+      localStorage.setItem('bookings', JSON.stringify(existing));
+      localStorage.setItem('latestBooking', JSON.stringify(booking));
+    } catch (e) {
+      console.error('failed saving booking', e);
+    }
 
-    const successModal = document.getElementById("successModal");
-    const successText = document.getElementById("successText");
-    const closeSuccess = document.getElementById("closeSuccess");
+    // close booking modal and show success modal (premium UI)
+    if (modal) modal.style.display = 'none';
+
+    const successModal = document.getElementById('successModal');
+    const successText = document.getElementById('successText');
+    const closeSuccess = document.getElementById('closeSuccess');
 
     if (successText) {
       successText.innerHTML =
-        `Hotel: <b>${hotel.name}</b><br>` +
-        `Date: <b>${date}</b><br>` +
-        `Room: <b>${room}</b>`;
+        `<strong>${hotel.name}</strong><br>` +
+        `Room: <b>${room}</b><br>` +
+        `Check-in: <b>${booking.checkin}</b> — Check-out: <b>${booking.checkout}</b><br>` +
+        `Nights: <b>${nights}</b><br>` +
+        `Total paid: <b>${fmtCurrency(total)}</b>`;
     }
 
-    if (successModal) successModal.style.display = "flex";
+    if (successModal) successModal.style.display = 'flex';
 
     if (closeSuccess && successModal) {
       closeSuccess.onclick = () => {
-        successModal.style.display = "none";
+        successModal.style.display = 'none';
       };
     }
 
     if (successModal) {
-      window.addEventListener("click", (e) => {
+      window.addEventListener('click', (e) => {
         if (e.target === successModal) {
-          successModal.style.display = "none";
+          successModal.style.display = 'none';
         }
       });
     }
