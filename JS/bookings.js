@@ -16,6 +16,7 @@ function saveBookings(arr) {
 function createCard(b) {
   const el = document.createElement('article');
   el.className = 'booking-card card';
+  el.dataset.id = b.id;
 
   const top = document.createElement('div');
   top.className = 'booking-row';
@@ -138,6 +139,19 @@ function renderList() {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderList();
+  // if highlight param present, scroll to that booking and briefly highlight
+  const params = new URLSearchParams(window.location.search);
+  const highlight = params.get('highlight');
+  if (highlight) {
+    setTimeout(() => {
+      const node = document.querySelector(`[data-id="${highlight}"]`);
+      if (node) {
+        node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        node.classList.add('highlight');
+        setTimeout(() => node.classList.remove('highlight'), 3000);
+      }
+    }, 250);
+  }
 });
 
 // export for testing if needed

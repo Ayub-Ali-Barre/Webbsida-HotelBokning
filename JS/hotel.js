@@ -1,4 +1,5 @@
 import { MOCK_HOTELS } from "./constants.js";
+import { openModal, closeModal } from "./modal.js";
 
 function getHotelIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -100,75 +101,7 @@ function initBookingModal(hotel) {
     suite: 2.2,
   };
 
-  // Focus trap helpers and accessible open/close
-  let lastFocused = null;
-  let currentOpenModal = null;
-
-  const getFocusable = (root) => {
-    if (!root) return [];
-    const selectors = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-    return Array.from(root.querySelectorAll(selectors)).filter((el) => el.offsetParent !== null);
-  };
-
-  const trapKey = (e) => {
-    if (!currentOpenModal) return;
-    const focusables = getFocusable(currentOpenModal);
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      closeModal(currentOpenModal);
-      return;
-    }
-    if (e.key === 'Tab') {
-      if (!focusables.length) {
-        e.preventDefault();
-        return;
-      }
-      const idx = focusables.indexOf(document.activeElement);
-      if (e.shiftKey) {
-        // shift+tab
-        if (idx === 0 || document.activeElement === currentOpenModal) {
-          e.preventDefault();
-          focusables[focusables.length - 1].focus();
-        }
-      } else {
-        // tab
-        if (idx === focusables.length - 1) {
-          e.preventDefault();
-          focusables[0].focus();
-        }
-      }
-    }
-  };
-
-  function openModal(el) {
-    if (!el) return;
-    lastFocused = document.activeElement;
-    el.style.display = 'flex';
-    el.setAttribute('aria-hidden', 'false');
-    currentOpenModal = el;
-    const focusables = getFocusable(el);
-    if (focusables.length) focusables[0].focus();
-    document.addEventListener('keydown', trapKey);
-    // close when clicking on backdrop
-    el.addEventListener('click', onBackdropClick);
-  }
-
-  function closeModal(el) {
-    if (!el) return;
-    el.style.display = 'none';
-    el.setAttribute('aria-hidden', 'true');
-    currentOpenModal = null;
-    document.removeEventListener('keydown', trapKey);
-    el.removeEventListener('click', onBackdropClick);
-    if (lastFocused && lastFocused.focus) lastFocused.focus();
-  }
-
-  function onBackdropClick(e) {
-    // if click target is the backdrop (the modal container itself), close
-    if (e.target === e.currentTarget) {
-      closeModal(e.currentTarget);
-    }
-  }
+  // NOTE: modal open/close & focus-trap handled by JS/modal.js
 
   const resetSummary = () => {
     if (psNight) psNight.textContent = '-';
@@ -301,13 +234,13 @@ function initBookingModal(hotel) {
       };
     }
 
-    // view bookings button
+    // view bookings button (navigate and highlight this booking)
     const viewBookingsBtn = document.getElementById('viewBookings');
     if (viewBookingsBtn) {
       viewBookingsBtn.onclick = () => {
-        // close modal and navigate
+        // close modal and navigate, pass highlight id
         closeModal(successModal);
-        window.location.href = 'bookings.html';
+        window.location.href = `bookings.html?highlight=${encodeURIComponent(booking.id)}`;
       };
     }
   });
