@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aurora Grand Hotels</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/index.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/index.css" />
   </head>
   <body>
     <nav class="nav">
@@ -16,22 +19,30 @@
         <a href="bookings.html" class="link">My Bookings</a>
       </div>
       <div class="nav_buttons">
-      <a href="login.html" class="btn btn-outline">Sign In</a>
-      <a href="register.html" class="btn btn-outline">register</a>
+        <a href="login.html" class="btn btn-outline">Sign In</a>
+        <a href="register.html" class="btn btn-outline">register</a>
       </div>
-
     </nav>
 
     <header class="hero">
       <h1 class="title">Refined <span>Luxury</span></h1>
-      <p class="sub">Curated collections of the world's most exquisite stays, tailored to your journey.</p>
+      <p class="sub">
+        Curated collections of the world's most exquisite stays, tailored to your journey.
+      </p>
       <div class="search">
-        <input id="destination" list="cities" type="text" placeholder="Destination" class="input" autocomplete="off">
+        <input
+          id="destination"
+          list="cities"
+          type="text"
+          placeholder="Destination"
+          class="input"
+          autocomplete="off"
+        />
         <datalist id="cities">
           <!-- options will be populated dynamically via JS (teleport API) -->
         </datalist>
 
-        <input id="travel" type="text" placeholder="Travel Dates" class="input">
+        <input id="travel" type="text" placeholder="Travel Dates" class="input" />
         <button class="btn btn-gold">Search</button>
       </div>
     </header>
@@ -40,20 +51,25 @@
       <div class="section-header">
         <div>
           <span class="label">Featured Stays</span>
-          <h2 style="font-size: 2.5rem;">Global Gems</h2>
+          <h2 style="font-size: 2.5rem">Global Gems</h2>
         </div>
-        <a href="#" class="link" style="border-bottom: 1px solid">View All</a>
+        <a href="hotels.html" class="link" style="border-bottom: 1px solid">View All</a>
       </div>
-      <div id="grid" class="grid">
-      </div>
+      <div id="grid" class="grid"></div>
     </main>
 
     <footer class="footer">
       <div>
-        <div class="logo" style="margin-bottom: 1.5rem; font-size: 1.5rem;">AURORA</div>
-        <p style="opacity: 0.5; font-size: 0.9rem; max-width: 300px;">Visionary design and exceptional hospitality</p>
+        <div class="logo" style="margin-bottom: 1.5rem; font-size: 1.5rem">AURORA</div>
+        <p style="opacity: 0.5; font-size: 0.9rem; max-width: 300px">
+          Visionary design and exceptional hospitality
+        </p>
       </div>
       <div>
+        <!-- footer columns intentionally left simple -->
+      </div>
+    </footer>
+
     <script type="module" src="JS/index.js"></script>
   </body>
 </html>
