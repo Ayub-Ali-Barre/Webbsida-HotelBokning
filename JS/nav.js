@@ -15,7 +15,25 @@ function createMyBookingsLink() {
   a.href = 'bookings.html';
   a.className = 'link';
   a.textContent = 'My Bookings';
+  // add a small badge showing number of saved bookings (if any)
+  const span = document.createElement('span');
+  span.className = 'nav-badge';
+  span.style.marginLeft = '0.5rem';
+  span.style.padding = '0.1rem 0.45rem';
+  span.style.borderRadius = '999px';
+  span.style.background = 'rgba(237,190,102,0.15)';
+  span.style.color = 'var(--secondary)';
+  span.style.fontSize = '0.8rem';
+  span.textContent = getBookingsCount();
+  a.appendChild(span);
   return a;
+}
+
+function getBookingsCount() {
+  try {
+    const arr = JSON.parse(localStorage.getItem('bookings') || '[]');
+    return Array.isArray(arr) ? String(arr.length) : '0';
+  } catch (e) { return '0'; }
 }
 
 function renderNav() {

@@ -1,3 +1,11 @@
+import { isSignedIn } from './auth.js';
+
+// protect the bookings list: require a signed-in user to view
+if (!isSignedIn()) {
+  // redirect to login and request to come back to bookings after sign-in
+  window.location.href = 'login.html?redirect=bookings.html';
+}
+
 function fmtCurrency(n) { return `$${Number(n).toFixed(2)}`; }
 
 function loadBookings() {

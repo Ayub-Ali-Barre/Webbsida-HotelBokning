@@ -4,7 +4,7 @@ import { MOCK_HOTELS } from "./constants.js";
 function createHotelCardHTML(hotel) {
   return `
     <article class="card">
-      <img src="${hotel.image}" alt="${hotel.name}" class="card-img" loading="lazy">
+  <img src="${hotel.image}" alt="${hotel.name}" class="card-img" loading="lazy" width="640" height="360">
       <div class="card-body">
         <span class="label">${hotel.location}</span>
         <div class="card-row">

@@ -1,5 +1,13 @@
+import { isSignedIn } from './auth.js';
+
 function qs(name) {
   return new URLSearchParams(window.location.search).get(name);
+}
+
+// require sign-in to view booking details
+if (!isSignedIn()) {
+  const redirectTo = `booking.html${window.location.search}`;
+  window.location.href = `login.html?redirect=${encodeURIComponent(redirectTo)}`;
 }
 
 function loadBookings() {
