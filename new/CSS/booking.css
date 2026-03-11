@@ -1,0 +1,136 @@
+.booking-container {
+  max-width: 1200px;
+  margin: 8rem auto;
+  padding: 0 2rem;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 4rem;
+}
+
+@media (max-width: 900px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hotel-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hotel-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.hotel-info h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.hotel-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+.hotel-description {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: var(--text-dim);
+}
+
+.amenities-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.booking-form-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 8rem;
+}
+
+.booking-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--secondary);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
+.form-input {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 1rem;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--secondary);
+}
+
+.booking-summary {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-weight: bold;
+  font-size: 1.1rem;
+}

@@ -1,37 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact Us | Aurora Grand Hotels</title>
-    <meta
-      name="description"
-      content="Contact our concierge team for bookings, events and bespoke requests."
-    />
-    <meta property="og:title" content="Aurora — Contact" />
-    <meta
-      property="og:description"
-      content="Reach out to our concierge for booking support and special requests."
-    />
-    <link rel="icon" href="favicon.ico" />
-    <link rel="manifest" href="manifest.json" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="CSS/contact.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CSS/contact.css">
   </head>
   <body>
     <nav class="nav">
       <a href="index.html" class="logo">AURORA</a>
-      <div class="menu">
-        <a href="hotels.html" class="link">Hotels</a>
-        <a href="contact.html" class="link active">Contact</a>
-        <a href="bookings.html" class="link">My Bookings</a>
-      </div>
-      <div class="nav_buttons">
-        <a href="login.html" class="btn btn-outline">Sign In</a>
-        <a href="register.html" class="btn btn-outline">register</a>
+     <div id="menu" class="menu">
+  <a href="hotels.html" class="link">Hotels</a>
+  <a href="contact.html" class="link">Contact</a>
+</div>
+      <div id="navButtons" class="nav_buttons">
+      <a href="login.html" class="btn btn-outline">Sign In</a>
+      <a href="register.html" class="btn btn-outline">register</a>
       </div>
     </nav>
 
@@ -40,24 +25,22 @@
         <div class="form-container">
           <span class="label">Inquiries</span>
           <h1 class="title">Get in Touch</h1>
-          <p class="sub">
-            Whether it's a booking or a bespoke request, our concierge team is here to assist you.
-          </p>
-
+          <p class="sub">Whether it's a booking or a bespoke request, our concierge team is here to assist you.</p>
+          
           <form class="luxury-form">
             <div class="form-row">
               <div class="form-group">
                 <label>First Name</label>
-                <input type="text" />
+                <input type="text">
               </div>
               <div class="form-group">
                 <label>Last Name</label>
-                <input type="text" />
+                <input type="text">
               </div>
             </div>
             <div class="form-group">
               <label>Email Address</label>
-              <input type="email" id="contactEmail" name="email" required />
+              <input type="email>
             </div>
             <div class="form-group">
               <label>Subject</label>
@@ -76,8 +59,6 @@
           </form>
         </div>
       </section>
-    </main>
-
-    <script type="module" src="JS/nav.js"></script>
+      <script src="JS/auth.js"></script>
   </body>
 </html>
