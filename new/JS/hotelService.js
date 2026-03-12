@@ -4,5 +4,10 @@ export async function fetchHotels() {
 
   const data = await response.json();
 
+  if (!Array.isArray(data)) {
+    console.error("Backend error:", data);
+    return [];
+  }
+
   return data;
 }

@@ -6,13 +6,16 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from fastapi.middleware.cors import CORSMiddleware
 
-HOTELS_API_KEY = "b90c1934efe28f3b457c74085e520d1e9279e2e95275039fc003eab68113bcad"
+RAPIDAPI_KEY = "e13e5ed653mshcd6b243ee3b8c76p1deb6cjsn9f421de96958"
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5501"],
+       allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://127.0.0.1:5501"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -31,6 +34,17 @@ class User(BaseModel):
 class LoginUser(BaseModel):
     email: str
     password: str
+
+
+
+class BookingRequest(BaseModel):
+    user_id: int
+    hotel_id: str
+    hotel_name: str
+    check_in: str
+    check_out: str
+    guests: int
+  
 
 
 @app.post("/register")
@@ -98,59 +112,66 @@ def login(user: LoginUser):
     except VerifyMismatchError:
         raise HTTPException(status_code=401, detail="Invalid email or password")
     
-
-
 @app.get("/hotels")
 def get_hotels():
 
-    url = "https://api.hotels-api.com/v1/hotels/search"
+    url = "https://booking-com15.p.rapidapi.com/api/v1/hotels/searchHotels"
 
-    params = {
-        "city": "Paris",
-        "limit": 12
+    from datetime import datetime, timedelta
+
+    today = datetime.today()
+    arrival_date = today.strftime("%Y-%m-%d")
+    departure_date = (today + timedelta(days=3)).strftime("%Y-%m-%d")
+
+    querystring = {
+    "dest_id": "-1456928",
+    "search_type": "CITY",
+    "arrival_date": arrival_date,
+    "departure_date": departure_date,
+    "adults": "2",
+    "room_qty": "1",
+    "page_number": "1"
     }
+
+    
 
     headers = {
-        "X-API-KEY": HOTELS_API_KEY
+        "X-RapidAPI-Key": RAPIDAPI_KEY,
+        "X-RapidAPI-Host": "booking-com15.p.rapidapi.com"
     }
 
-    response = requests.get(url, params=params, headers=headers)
+    response = requests.get(url, headers=headers, params=querystring)
 
-    if response.status_code != 200:
-        raise HTTPException(status_code=500, detail="Failed to fetch hotels")
+    print("STATUS:", response.status_code)
+    print("BODY:", response.text)
 
     data = response.json()
 
+    # 🔒 If API fails
+    if not data.get("data"):
+        print("API returned error:", data)
+        return []
+
     hotels = []
 
-    for h in data["data"]:
+    for h in data["data"]["hotels"][:12]:
+
+        property = h["property"]
 
         hotels.append({
-            "id": str(h["id"]),
-            "name": h["name"],
-            "location": h["city"] + ", " + h["country"],
-            "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-            "pricePerNight": 200,
-            "description": "Luxury stay in the heart of the city.",
-            "rating": h.get("rating", 4.5),
-            "reviews": 120,
-            "amenities": h.get("amenities", ["Wifi", "Pool", "Breakfast"]),
+            "id": str(property.get("id")),
+            "name": property.get("name"),
+            "location": property.get("wishlistName"),
+            "image": property.get("photoUrls", [""])[0],
+            "pricePerNight": property.get("priceBreakdown", {}).get("grossPrice", {}).get("value", 200),
+            "description": "Luxury stay in the heart of the city",
+            "rating": property.get("reviewScore", 4.5),
+            "reviews": property.get("reviewCount", 0),
+            "amenities": ["Wifi","Pool","Breakfast"],
             "category": "Luxury"
         })
 
     return hotels
-
-
-
-
-class BookingRequest(BaseModel):
-    user_id: int
-    hotel_id: str
-    hotel_name: str
-    check_in: str
-    check_out: str
-    guests: int
-  
 
 @app.post("/book")
 def book_hotel(booking: BookingRequest):
@@ -239,6 +260,9 @@ def get_bookings(user_id: int):
     return bookings
 
 
+
+
+
 @app.delete("/booking/{booking_id}")
 def delete_booking(booking_id: int):
     db = mysql.connector.connect(
@@ -262,3 +286,28 @@ def delete_booking(booking_id: int):
     db.close()
 
     return {"status": "booking deleted"}
+
+
+
+@app.get("/hotel/{hotel_id}")
+def get_hotel_details(hotel_id: str):
+
+    url = "https://booking-com.p.rapidapi.com/v1/hotels/data"
+
+    querystring = {
+        "hotel_id": hotel_id
+    }
+
+    headers = {
+        "X-RapidAPI-Key": RAPIDAPI_KEY,
+        "X-RapidAPI-Host": "booking-com.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=500, detail="Hotel API error")
+
+    data = response.json()
+
+    return data
