@@ -1,10 +1,18 @@
 import requests
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
 import mysql.connector
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from fastapi.middleware.cors import CORSMiddleware
+
+from jose import jwt
+from datetime import datetime, timedelta
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+from typing import List
+from fastapi.responses import RedirectResponse
+
 
 RAPIDAPI_KEY = "e13e5ed653mshcd6b243ee3b8c76p1deb6cjsn9f421de96958"
 
@@ -22,6 +30,53 @@ app.add_middleware(
 )
 
 ph = PasswordHasher()
+
+SECRET_KEY = "KEY"
+
+conf = ConnectionConfig(
+    MAIL_USERNAME="aurorahotelsupport@gmail.com",
+    MAIL_PASSWORD="azae kkjx zrld emvf",
+    MAIL_FROM="aurorahotelsupport@gmail.com",
+    MAIL_PORT=587,
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False
+)
+
+def create_verification_token(email: str):
+
+    payload = {
+        "email": email,
+        "exp": datetime.utcnow() + timedelta(hours=24)
+    }
+
+    token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+    return token
+
+
+async def send_verification_email(email: str, token: str):
+
+    verification_link = f"http://127.0.0.1:8000/verify-email/?token={token}"
+
+    message = MessageSchema(
+        subject="Verify your Aurora account",
+        recipients=[email],
+        body=f"""
+Welcome to Aurora Hotels!
+
+Click the link below to verify your email:
+
+{verification_link}
+
+If you did not create an account, ignore this email.
+""",
+        subtype="plain"
+    )
+
+    fm = FastMail(conf)
+    await fm.send_message(message)
+
 
 
 class User(BaseModel):
@@ -133,8 +188,6 @@ def get_hotels():
     "page_number": "1"
     }
 
-    
-
     headers = {
         "X-RapidAPI-Key": RAPIDAPI_KEY,
         "X-RapidAPI-Host": "booking-com15.p.rapidapi.com"
@@ -147,7 +200,6 @@ def get_hotels():
 
     data = response.json()
 
-    # 🔒 If API fails
     if not data.get("data"):
         print("API returned error:", data)
         return []
@@ -185,7 +237,6 @@ def book_hotel(booking: BookingRequest):
 
     cursor = db.cursor(dictionary=True)
 
-    # beräkna nätter
     from datetime import datetime
 
     checkin = datetime.fromisoformat(booking.check_in)
@@ -196,7 +247,6 @@ def book_hotel(booking: BookingRequest):
     if nights <= 0:
         raise HTTPException(status_code=400, detail="Invalid dates")
 
-    # Hämta hotell från dummy API för att få pris
     response = requests.get("https://dummyjson.com/products/" + booking.hotel_id)
     data = response.json()
 
@@ -311,3 +361,69 @@ def get_hotel_details(hotel_id: str):
     data = response.json()
 
     return data
+
+
+@app.post("/send-verification/{user_id}")
+async def send_verification(user_id: int):
+
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="testdb"
+    )
+
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("SELECT email, is_verified FROM users WHERE id=%s", (user_id,))
+    user = cursor.fetchone()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    if user["is_verified"]:
+        raise HTTPException(status_code=400, detail="Already verified")
+
+    token = create_verification_token(user["email"])
+
+    await send_verification_email(user["email"], token)
+
+    return {"status": "verification sent"}
+
+
+
+@app.get("/verify-email/")
+def verify_email(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        email = payload.get("email")
+        if not email:
+            raise HTTPException(status_code=400, detail="Invalid token")
+
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="testdb"
+        )
+        cursor = db.cursor(dictionary=True)
+
+        cursor.execute("SELECT id, is_verified FROM users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        if not user["is_verified"]:
+            cursor.execute("UPDATE users SET is_verified=1 WHERE email=%s", (email,))
+            db.commit()
+
+        cursor.close()
+        db.close()
+
+        return RedirectResponse(url="http://127.0.0.1:5500/new/profile.html")
+
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=400, detail="Token expired")
+    except jwt.JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token")
