@@ -14,7 +14,7 @@ from typing import List
 from fastapi.responses import RedirectResponse
 
 
-RAPIDAPI_KEY = "e13e5ed653mshcd6b243ee3b8c76p1deb6cjsn9f421de96958"
+RAPIDAPI_KEY = "64f0daaebemshd0d0a1c6bba2290p1c1aafjsn3d474e92bce4"
 
 app = FastAPI()
 
