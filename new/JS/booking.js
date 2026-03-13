@@ -1,5 +1,5 @@
 import { getCurrentUser } from "./auth.js";
-import { getHotelById } from "./hotelService.js";
+import { fetchHotels } from "./hotelService.js";
 
 function getHotelIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
@@ -107,18 +107,37 @@ function calculateNights(checkIn, checkOut) {
   return diffDays > 0 ? diffDays : 0;
 }
 
-function initBooking() {
+async function initBooking() {
   const user = getCurrentUser();
   if (!user) {
     window.location.href = "login.html";
     return;
   }
 
-  const hotelId = getHotelIdFromUrl();
-  const hotel = getHotelById(hotelId);
-
   const bookingContainer = document.getElementById("booking-container");
   const hotelInfoContainer = document.getElementById("booking-hotel-info");
+
+  if (!bookingContainer || !hotelInfoContainer) {
+    console.error("Booking page elements not found.");
+    return;
+  }
+
+  const hotelId = getHotelIdFromUrl();
+  if (!hotelId) {
+    bookingContainer.innerHTML = "<p>Hotel ID is missing in URL.</p>";
+    return;
+  }
+
+  let hotel = null;
+
+  try {
+    const hotels = await fetchHotels();
+    hotel = hotels.find((h) => String(h.id) === String(hotelId));
+  } catch (error) {
+    console.error("Could not load hotels:", error);
+    bookingContainer.innerHTML = "<p>Failed to load hotel data.</p>";
+    return;
+  }
 
   if (!hotel) {
     bookingContainer.innerHTML = "<p>Hotel not found.</p>";
@@ -140,7 +159,6 @@ function initBooking() {
 
   const form = document.getElementById("booking-form");
   const msg = document.getElementById("bookingMessage");
-
   const checkinInput = document.getElementById("checkin");
   const checkoutInput = document.getElementById("checkout");
   const guestsInput = document.getElementById("guests");
@@ -185,7 +203,7 @@ function initBooking() {
 
     const check_in = checkinInput.value;
     const check_out = checkoutInput.value;
-    const guests = parseInt(guestsInput.value);
+    const guests = parseInt(guestsInput.value, 10);
 
     if (!check_in || !check_out) {
       msg.textContent = "Please select check-in and check-out dates.";
@@ -248,6 +266,7 @@ function initBooking() {
       form.reset();
       calculateTotals();
     } catch (error) {
+      console.error(error);
       msg.textContent = "Server error. Please try again.";
       msg.style.color = "tomato";
     }
