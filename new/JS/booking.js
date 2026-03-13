@@ -1,278 +1,128 @@
-import { getCurrentUser } from "./auth.js";
 import { fetchHotels } from "./hotelService.js";
 
-function getHotelIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("id");
+function createHotelDetailsHTML(hotel) {
+  return `
+    <div class="hotel-details">
+      <img src="${hotel.image}" alt="${hotel.name}" class="hotel-image">
+      <div class="hotel-info">
+        <span class="label">${hotel.category} Collection</span>
+        <h1>${hotel.name}</h1>
+        <div class="hotel-meta">
+          <span>${hotel.location}</span>
+          <span>${hotel.rating} ★ (${hotel.reviews} reviews)</span>
+        </div>
+        <p class="hotel-description">${hotel.description}</p>
+        <div class="amenities-list">
+          ${hotel.amenities.map(a => `<div class="amenity-item"><span>•</span> <span>${a}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function createBookingFormHTML(hotel) {
   return `
     <div class="booking-form-card">
-      <span class="booking-price">$${hotel.pricePerNight} <small>/ night</small></span>
-
       <form id="booking-form" class="booking-form">
         <div class="form-group">
           <label>Check-in</label>
           <input type="date" id="checkin" class="form-input" required>
         </div>
-
         <div class="form-group">
           <label>Check-out</label>
           <input type="date" id="checkout" class="form-input" required>
         </div>
-
         <div class="form-group">
           <label>Guests</label>
           <select id="guests" class="form-input">
-            <option value="1">1</option>
-            <option value="2" selected>2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option>1</option>
+            <option selected>2</option>
+            <option>3</option>
+            <option>4</option>
           </select>
         </div>
-
-        <div class="extras-section">
-          <h3 class="extras-title">Room Extras</h3>
-
-          <label class="extra-item">
-            <div>
-              <span>Welcome Water</span>
-              <small>$5</small>
-            </div>
-            <input type="checkbox" class="extra-checkbox" data-name="Welcome Water" data-price="5">
-          </label>
-
-          <label class="extra-item">
-            <div>
-              <span>Soft Drinks</span>
-              <small>$8</small>
-            </div>
-            <input type="checkbox" class="extra-checkbox" data-name="Soft Drinks" data-price="8">
-          </label>
-
-          <label class="extra-item">
-            <div>
-              <span>Snacks Tray</span>
-              <small>$12</small>
-            </div>
-            <input type="checkbox" class="extra-checkbox" data-name="Snacks Tray" data-price="12">
-          </label>
-
-          <label class="extra-item">
-            <div>
-              <span>Breakfast to Room</span>
-              <small>$25</small>
-            </div>
-            <input type="checkbox" class="extra-checkbox" data-name="Breakfast to Room" data-price="25">
-          </label>
-        </div>
-
-        <div class="booking-summary" id="booking-summary">
-          <div class="summary-row">
-            <span>Room total</span>
-            <span id="room-total">$0.00</span>
-          </div>
-
-          <div class="summary-row">
-            <span>Extras</span>
-            <span id="extras-total">$0.00</span>
-          </div>
-
-          <div class="summary-total">
-            <span>Grand Total</span>
-            <span id="grand-total">$0.00</span>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-gold" style="width:100%; margin-top:1rem;">
-          Reserve Now
-        </button>
+        <button type="submit" class="btn btn-gold" style="width:100%; margin-top:1rem;">Reserve Now</button>
       </form>
-
       <p id="bookingMessage" style="margin-top:1rem; font-weight:600;"></p>
     </div>
   `;
 }
 
-function calculateNights(checkIn, checkOut) {
-  if (!checkIn || !checkOut) return 0;
-
-  const checkInDate = new Date(checkIn);
-  const checkOutDate = new Date(checkOut);
-
-  const diffMs = checkOutDate - checkInDate;
-  const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
-  return diffDays > 0 ? diffDays : 0;
-}
-
 async function initBooking() {
-  const user = getCurrentUser();
+  const bookingContent = document.getElementById("booking-content");
+  const urlParams = new URLSearchParams(window.location.search);
+  const hotelId = urlParams.get("id");
+  const user = JSON.parse(localStorage.getItem("user")); // Hämta inloggad user
+
   if (!user) {
-    window.location.href = "login.html";
+    bookingContent.innerHTML = `<p style="grid-column:1/-1;text-align:center;">You must be logged in to book. <a href="login.html">Sign in</a></p>`;
     return;
   }
 
-  const bookingContainer = document.getElementById("booking-container");
-  const hotelInfoContainer = document.getElementById("booking-hotel-info");
-
-  if (!bookingContainer || !hotelInfoContainer) {
-    console.error("Booking page elements not found.");
-    return;
-  }
-
-  const hotelId = getHotelIdFromUrl();
   if (!hotelId) {
-    bookingContainer.innerHTML = "<p>Hotel ID is missing in URL.</p>";
+    bookingContent.innerHTML = `<p style="grid-column:1/-1;text-align:center;">No hotel selected.</p>`;
     return;
   }
-
-  let hotel = null;
 
   try {
-    const hotels = await fetchHotels();
-    hotel = hotels.find((h) => String(h.id) === String(hotelId));
-  } catch (error) {
-    console.error("Could not load hotels:", error);
-    bookingContainer.innerHTML = "<p>Failed to load hotel data.</p>";
-    return;
-  }
+    const allHotels = await fetchHotels();
+    const hotel = allHotels.find(h => h.id === hotelId);
 
-  if (!hotel) {
-    bookingContainer.innerHTML = "<p>Hotel not found.</p>";
-    return;
-  }
-
-  hotelInfoContainer.innerHTML = `
-    <div class="booking-hotel-card">
-      <img src="${hotel.image}" alt="${hotel.name}" class="booking-hotel-image">
-      <div class="booking-hotel-text">
-        <span class="label">${hotel.location}</span>
-        <h1>${hotel.name}</h1>
-        <p>${hotel.description}</p>
-      </div>
-    </div>
-  `;
-
-  bookingContainer.innerHTML = createBookingFormHTML(hotel);
-
-  const form = document.getElementById("booking-form");
-  const msg = document.getElementById("bookingMessage");
-  const checkinInput = document.getElementById("checkin");
-  const checkoutInput = document.getElementById("checkout");
-  const guestsInput = document.getElementById("guests");
-  const extraCheckboxes = document.querySelectorAll(".extra-checkbox");
-
-  function calculateTotals() {
-    const checkInValue = checkinInput.value;
-    const checkOutValue = checkoutInput.value;
-
-    const nights = calculateNights(checkInValue, checkOutValue);
-    const roomTotal = nights * Number(hotel.pricePerNight || 0);
-
-    let extrasTotal = 0;
-    extraCheckboxes.forEach((checkbox) => {
-      if (checkbox.checked) {
-        extrasTotal += Number(checkbox.dataset.price);
-      }
-    });
-
-    const grandTotal = roomTotal + extrasTotal;
-
-    document.getElementById("room-total").textContent = `$${roomTotal.toFixed(2)}`;
-    document.getElementById("extras-total").textContent = `$${extrasTotal.toFixed(2)}`;
-    document.getElementById("grand-total").textContent = `$${grandTotal.toFixed(2)}`;
-
-    return { nights, roomTotal, extrasTotal, grandTotal };
-  }
-
-  checkinInput.addEventListener("change", calculateTotals);
-  checkoutInput.addEventListener("change", calculateTotals);
-  guestsInput.addEventListener("change", calculateTotals);
-
-  extraCheckboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", calculateTotals);
-  });
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    msg.textContent = "";
-    msg.style.color = "";
-
-    const check_in = checkinInput.value;
-    const check_out = checkoutInput.value;
-    const guests = parseInt(guestsInput.value, 10);
-
-    if (!check_in || !check_out) {
-      msg.textContent = "Please select check-in and check-out dates.";
-      msg.style.color = "tomato";
+    if (!hotel) {
+      bookingContent.innerHTML = `<p style="grid-column:1/-1;text-align:center;">Hotel not found.</p>`;
       return;
     }
 
-    const nights = calculateNights(check_in, check_out);
-    if (nights <= 0) {
-      msg.textContent = "Check-out must be after check-in.";
-      msg.style.color = "tomato";
-      return;
-    }
+    bookingContent.innerHTML = `
+      ${createHotelDetailsHTML(hotel)}
+      ${createBookingFormHTML(hotel)}
+    `;
 
-    const selectedExtras = [];
-    document.querySelectorAll(".extra-checkbox").forEach((checkbox) => {
-      if (checkbox.checked) {
-        selectedExtras.push({
-          name: checkbox.dataset.name,
-          price: Number(checkbox.dataset.price)
-        });
-      }
-    });
+    const form = document.getElementById("booking-form");
+    const msg = document.getElementById("bookingMessage");
 
-    const totals = calculateTotals();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    try {
-      const res = await fetch("http://127.0.0.1:8000/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+      const check_in = document.getElementById("checkin").value;
+      const check_out = document.getElementById("checkout").value;
+      const guests = parseInt(document.getElementById("guests").value);
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/book", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
         body: JSON.stringify({
           user_id: user.id,
           hotel_id: hotel.id,
           hotel_name: hotel.name,
           check_in,
           check_out,
-          guests,
-          extras: selectedExtras,
-          extras_total: totals.extrasTotal,
-          grand_total: totals.grandTotal
-        })
-      });
+          guests
+          })
+        });
 
-      const data = await res.json();
+        const data = await response.json();
 
-      if (!res.ok) {
-        msg.textContent = data.detail || "Booking failed.";
-        msg.style.color = "tomato";
-        return;
+        if (response.ok) {
+          msg.textContent = `Booking successful! Total: $${data.total_price} for ${data.nights} nights.`;
+          setTimeout(() => window.location.href = "profile.html", 2000);
+        } else {
+          msg.textContent = `Booking failed: ${data.detail}`;
+        }
+
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Booking failed. Please try again later.";
       }
+    });
 
-      msg.textContent =
-        `Booking successful! Room total: $${data.total_price}. ` +
-        `Extras: $${totals.extrasTotal.toFixed(2)}. ` +
-        `Grand total: $${totals.grandTotal.toFixed(2)} for ${data.nights} nights.`;
-
-      msg.style.color = "lightgreen";
-      form.reset();
-      calculateTotals();
-    } catch (error) {
-      console.error(error);
-      msg.textContent = "Server error. Please try again.";
-      msg.style.color = "tomato";
-    }
-  });
-
-  calculateTotals();
+  } catch (err) {
+    console.error(err);
+    bookingContent.innerHTML = `<p style="grid-column:1/-1;text-align:center;">Failed to load hotel details.</p>`;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", initBooking);
