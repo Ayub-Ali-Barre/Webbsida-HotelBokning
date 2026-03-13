@@ -1,3 +1,8 @@
+export function getCurrentUser() {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+}
+
 function updateNavbar() {
 
   const navButtons = document.getElementById("navButtons");
