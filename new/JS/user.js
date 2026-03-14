@@ -82,22 +82,42 @@ async function initProfile() {
       </div>
     `).join("");
 
-    document.querySelectorAll(".cancel-booking").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const bookingId = btn.dataset.id;
-        if (!confirm("Cancel this booking?")) return;
+  document.querySelectorAll(".cancel-booking").forEach(btn => {
 
-        try {
-          const res = await fetch(`http://127.0.0.1:8000/booking/${bookingId}`, { method: "DELETE" });
-          if (!res.ok) throw new Error();
-          btn.closest(".booking-card").remove();
-        } catch (err) {
-          alert("Could not cancel booking");
-          console.error(err);
-        }
-      });
-    });
+  btn.addEventListener("click", async () => {
 
+    const bookingId = btn.dataset.id;
+
+    if (!confirm("Cancel this booking?")) return;
+
+    try {
+
+      const res = await fetch(
+        `http://127.0.0.1:8000/booking/${bookingId}`,
+        { method: "DELETE" }
+      );
+
+      const data = await res.json();
+
+      console.log("DELETE RESPONSE:", data);
+
+      if (!res.ok) throw new Error(data.detail);
+
+      btn.closest(".booking-card").remove();
+
+    }
+
+    catch (err) {
+
+      console.error("DELETE ERROR:", err);
+
+      alert("Could not cancel booking");
+
+    }
+
+  });
+
+});
   } catch (error) {
     console.error(error);
     bookingsList.innerHTML = `<div style="padding:2rem;text-align:center;">Failed to load bookings</div>`;
