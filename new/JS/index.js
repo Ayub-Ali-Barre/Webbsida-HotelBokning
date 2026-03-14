@@ -8,7 +8,7 @@ function createHotelCardHTML(hotel) {
         <span class="label">${hotel.location}</span>
         <div class="card-row">
           <h3 class="card-name">${hotel.name}</h3>
-          <span class="card-price">$${hotel.pricePerNight}</span>
+          <span class="card-price">$${Math.round(hotel.pricePerNight)} / night</span>
         </div>
         <p class="card-text">${hotel.description}</p>
         <button class="btn btn-outline book-btn" data-id="${hotel.id}" style="width: 100%; padding: 1rem;">

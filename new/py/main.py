@@ -14,9 +14,12 @@ from typing import List
 from fastapi.responses import RedirectResponse
 
 
-RAPIDAPI_KEY = "64f0daaebemshd0d0a1c6bba2290p1c1aafjsn3d474e92bce4"
+RAPIDAPI_KEY = "a4ce23d0d1msh3ffd6b92f83b59bp1a2d83jsn9a2321b1fd2e"
+SECRET_KEY = "KEY"
 
 app = FastAPI()
+ph = PasswordHasher()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,9 +32,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ph = PasswordHasher()
-
-SECRET_KEY = "KEY"
 
 conf = ConnectionConfig(
     MAIL_USERNAME="aurorahotelsupport@gmail.com",
@@ -154,16 +154,16 @@ def login(user: LoginUser):
     try:
         ph.verify(db_user["password"], user.password)
 
-        return {
-            "status": "login success",
-            "user": {
-                "id": db_user["id"],
-                "email": db_user["email"],
-                "username": db_user["username"],
-                "fullname": db_user["fullname"]
-            }
+        return  {
+        "status": "login success",
+        "user": {
+            "id": db_user["id"],
+            "email": db_user["email"],
+            "username": db_user["username"],
+            "fullname": db_user["fullname"],
+            "is_verified": db_user["is_verified"]
         }
-
+    }
     except VerifyMismatchError:
         raise HTTPException(status_code=401, detail="Invalid email or password")
     

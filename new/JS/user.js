@@ -9,7 +9,15 @@ async function initProfile() {
 
   let user = JSON.parse(userJSON);
 
-  document.querySelector(".profile-info h1").textContent = user.fullname;
+  const nameEl = document.querySelector(".profile-info h1");
+
+  if (user.is_verified) {
+    nameEl.innerHTML = `${user.fullname} <span class="verified">✔</span>`;
+    } else {
+  nameEl.textContent = user.fullname;
+}
+
+
   document.querySelector(".profile-info p").textContent = user.email;
 
   const verifySection = document.getElementById("verify-section");
