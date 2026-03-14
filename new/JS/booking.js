@@ -1,5 +1,15 @@
 import { fetchHotels } from "./hotelService.js";
+import { fetchHotels } from "./hotelService.js";
+import { getCurrentUser } from "./auth.js";
 
+const ROOM_EXTRAS = [
+  { name: "Breakfast to Room", price: 25 },
+  { name: "Lunch to Room", price: 35 },
+  { name: "Dinner to Room", price: 45 },
+  { name: "Snacks Tray", price: 12 },
+  { name: "Soft Drinks", price: 8 },
+  { name: "Water", price: 5 }
+];
 function createHotelDetailsHTML(hotel) {
   return `
     <div class="hotel-details">
@@ -42,8 +52,8 @@ function createBookingFormHTML(hotel) {
           </select>
         </div>
         <button type="submit" class="btn btn-gold" style="width:100%; margin-top:1rem;">Reserve Now</button>
-      </form>
-      <p id="bookingMessage" style="margin-top:1rem; font-weight:600;"></p>
+      </rorm>
+      <pjid="bookingMessage" style="margin-top:1rem; font-weight:600;"></p>
     </div>
   `;
 }
