@@ -20,7 +20,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:5500",
-        "http://127.0.0.1:5501"
+        "http://127.0.0.1:5501",
+        
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -29,11 +30,11 @@ app.add_middleware(
 
 
 conf = ConnectionConfig(
-    MAIL_USERNAME="aurorahotelsupport@gmail.com",
-    MAIL_PASSWORD="azae kkjx zrld emvf",
-    MAIL_FROM="aurorahotelsupport@gmail.com",
+    MAIL_USERNAME="support@auroraresort.online",
+    MAIL_PASSWORD="",
+    MAIL_FROM="support@auroraresort.online",
     MAIL_PORT=587,
-    MAIL_SERVER="smtp.gmail.com",
+    MAIL_SERVER="mail.privateemail.com",
     MAIL_STARTTLS=True,
     MAIL_SSL_TLS=False
 )
@@ -142,7 +143,7 @@ def create_verification_token(email: str):
 
 async def send_verification_email(email: str, token: str):
 
-    verification_link = f"http://127.0.0.1:8000/verify-email/?token={token}"
+    verification_link = f"http://auroraresort/verify-email/?token={token}"
 
     message = MessageSchema(
         subject="Verify your Aurora account",
