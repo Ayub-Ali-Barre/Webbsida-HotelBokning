@@ -143,7 +143,8 @@ def create_verification_token(email: str):
 
 async def send_verification_email(email: str, token: str):
 
-    verification_link = f"http://auroraresort/verify-email/?token={token}"
+        
+    verification_link = f"https://auroraresort.online/verify-email/?token={token}"
 
     message = MessageSchema(
         subject="Verify your Aurora account",
@@ -191,7 +192,7 @@ def register(user: User):
         host="localhost",
         user="root",
         password="",
-        database="testdb"
+        database="DB"
     )
 
     cursor = db.cursor(dictionary=True)
@@ -221,7 +222,7 @@ def login(user: LoginUser):
         host="localhost",
         user="root",
         password="",
-        database="testdb"
+        database="DB"
     )
 
     cursor = db.cursor(dictionary=True)
@@ -266,7 +267,7 @@ def book_hotel(booking: BookingRequest):
         host="localhost",
         user="root",
         password="",
-        database="testdb"
+        database="DB"
     )
 
     cursor = db.cursor(dictionary=True)
@@ -325,7 +326,7 @@ def get_bookings(user_id:int):
         host="localhost",
         user="root",
         password="",
-        database="testdb"
+        database="DB"
     )
 
     cursor = db.cursor(dictionary=True)
@@ -353,7 +354,7 @@ def delete_booking(booking_id: int):
         host="localhost",
         user="root",
         password="",
-        database="testdb"
+        database="DB"
     )
 
     cursor = db.cursor(dictionary=True)
@@ -373,3 +374,43 @@ def delete_booking(booking_id: int):
     db.close()
 
     return {"status": "deleted"}
+
+
+@app.get("/verify-email/")
+def verify_email(token: str):
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        email = payload.get("email")
+
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="DB"
+        )
+
+        cursor = db.cursor(dictionary=True)
+
+        cursor.execute("SELECT id,is_verified FROM users WHERE email=%s",(email,))
+        user = cursor.fetchone()
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        if not user["is_verified"]:
+            cursor.execute(
+                "UPDATE users SET is_verified=1 WHERE email=%s",
+                (email,)
+            )
+            db.commit()
+
+        cursor.close()
+        db.close()
+
+        return RedirectResponse(
+            url="https://auroraresort.online/profile.html"
+        )
+
+    except jwt.ExpiredSignatureError:
+        raise HTTP
