@@ -58,7 +58,7 @@ async function initProfile() {
   }
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/my-bookings/${user.id}`);
+    const response = await fetch(`http://auroraresort.online/py/my-bookings/${user.id}`);
     const bookings = await response.json();
 
     if (bookings.length === 0) {
@@ -93,7 +93,7 @@ async function initProfile() {
     try {
 
       const res = await fetch(
-        `http://127.0.0.1:8000/booking/${bookingId}`,
+        `http://auroraresort.online/py/booking/${bookingId}`,
         { method: "DELETE" }
       );
 

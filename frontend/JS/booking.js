@@ -52,7 +52,7 @@ async function initBooking() {
   const bookingContent = document.getElementById("booking-content");
   const urlParams = new URLSearchParams(window.location.search);
   const hotelId = urlParams.get("id");
-  const user = JSON.parse(localStorage.getItem("user")); // Hämta inloggad user
+  const user = JSON.parse(localStorage.getItem("user")); 
 
   if (!user) {
     bookingContent.innerHTML = `<p style="grid-column:1/-1;text-align:center;">You must be logged in to book. <a href="login.html">Sign in</a></p>`;
@@ -89,7 +89,7 @@ async function initBooking() {
       const guests = parseInt(document.getElementById("guests").value);
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/book", {
+        const response = await fetch("http://auroraresort.online/pt/book", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

@@ -1,13 +1,11 @@
+const API_BASE = "https://auroraresort.online/py";
+
 export async function fetchHotels() {
+  const res = await fetch(`${API_BASE}/hotels`);
 
-  const response = await fetch("http://127.0.0.1:8000/hotels");
-
-  const data = await response.json();
-
-  if (!Array.isArray(data)) {
-    console.error("Backend error:", data);
-    return [];
+  if (!res.ok) {
+    throw new Error("Failed to fetch hotels");
   }
 
-  return data;
+  return await res.json();
 }
