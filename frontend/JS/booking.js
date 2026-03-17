@@ -89,7 +89,7 @@ async function initBooking() {
       const guests = parseInt(document.getElementById("guests").value);
 
       try {
-        const response = await fetch("http://auroraresort.online/pt/book", {
+        const response = await fetch("/py/book", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

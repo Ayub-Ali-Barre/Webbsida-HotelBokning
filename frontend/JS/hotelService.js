@@ -1,7 +1,14 @@
-const API_BASE = "https://auroraresort.online/py";
+const API_BASE = "/py";
 
-export async function fetchHotels() {
-  const res = await fetch(`${API_BASE}/hotels`);
+export async function fetchHotels(city = "") {
+
+  let url = `${API_BASE}/hotels`;
+
+  if (city) {
+    url += `?city=${encodeURIComponent(city)}`;
+  }
+
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new Error("Failed to fetch hotels");

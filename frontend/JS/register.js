@@ -7,7 +7,7 @@ document.getElementById("registerForm")
   const username = document.getElementById("username").value;
   const fullname = document.getElementById("fullname").value;
 
-  fetch("http://auroraresort.online/py/register", {
+  fetch("/py/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

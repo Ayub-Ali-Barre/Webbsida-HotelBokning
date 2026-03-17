@@ -24,7 +24,7 @@ async function initProfile() {
   const verifyBtn = document.getElementById("verify-btn");
 
   try {
-    const res = await fetch(`http://127.0.0.1:8000/user-status/${user.id}`);
+    const res = await fetch(`/py/user-status/${user.id}`);
     if (res.ok) {
       const data = await res.json();
       user.is_verified = data.is_verified; 
@@ -40,7 +40,7 @@ async function initProfile() {
 
     verifyBtn.addEventListener("click", async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/send-verification/${user.id}`, { method: "POST" });
+        const res = await fetch(`/py/send-verification/${user.id}`, { method: "POST" });
         if (!res.ok) throw new Error();
 
         alert("Verification email sent! Check your inbox.");
@@ -58,7 +58,7 @@ async function initProfile() {
   }
 
   try {
-    const response = await fetch(`http://auroraresort.online/py/my-bookings/${user.id}`);
+    const response = await fetch(`/py/my-bookings/${user.id}`);
     const bookings = await response.json();
 
     if (bookings.length === 0) {
@@ -93,7 +93,7 @@ async function initProfile() {
     try {
 
       const res = await fetch(
-        `http://auroraresort.online/py/booking/${bookingId}`,
+        `/py/booking/${bookingId}`,
         { method: "DELETE" }
       );
 
