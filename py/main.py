@@ -152,26 +152,33 @@ def create_verification_token(email: str):
 
 
 async def send_verification_email(email: str, token: str):
+
     verification_link = f"https://www.auroraresort.online/py/verify-email/?token={token}"
 
     message = MessageSchema(
-        subject="Verify your Aurora account",
+        subject="Verify your Aurora Resort account",
         recipients=[email],
         body=f"""
-Welcome to Aurora Hotels!
+Hello,
 
-Click the link below to verify your email:
+Thank you for creating an account at Aurora Resort.
+
+Please verify your email address by clicking the link below:
 
 {verification_link}
 
-If you did not create an account, ignore this email.
+If you did not create this account, you can safely ignore this message.
+
+Best regards,
+Aurora Resort Support
+support@auroraresort.online
 """,
         subtype="plain"
     )
 
     fm = FastMail(conf)
     await fm.send_message(message)
-
+    
 
 class User(BaseModel):
     email: str
