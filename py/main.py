@@ -7,15 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
 from datetime import datetime, timedelta
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from fastapi.responses import RedirectResponse
+import smtplib
+from email.message import EmailMessage
 
 
 SECRET_KEY = "KEY"
 
 DB_HOST = "localhost"
 DB_USER = "aurora_user"
-DB_PASSWORD = "StarktLosenord"
+DB_PASSWORD = ""
 DB_NAME = "DB"
 
 MAIL_USERNAME = "support@auroraresort.online"
@@ -38,17 +39,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-conf = ConnectionConfig(
-    MAIL_USERNAME=MAIL_USERNAME,
-    MAIL_PASSWORD=MAIL_PASSWORD,
-    MAIL_FROM=MAIL_FROM,
-    MAIL_PORT=587,
-    MAIL_SERVER="mail.privateemail.com",
-    MAIL_STARTTLS=True,
-    MAIL_SSL_TLS=False
-)
-
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -151,15 +141,18 @@ def create_verification_token(email: str):
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 
+
 async def send_verification_email(email: str, token: str):
 
     verification_link = f"https://www.auroraresort.online/py/verify-email/?token={token}"
 
-    message = MessageSchema(
-        subject="Email verification for Aurora Resort account",
-        recipients=[email],
-        body=f"""
-Email verification required
+    msg = EmailMessage()
+    msg["Subject"] = "Email verification for Aurora Resort account"
+    msg["From"] = "support@auroraresort.online"
+    msg["To"] = email
+
+    msg.set_content(
+        f"""Email verification required
 
 You recently created an account at Aurora Resort.
 
@@ -169,19 +162,19 @@ To complete your registration, open the link below in your browser:
 
 If you did not create this account, no action is required.
 
----
-
-Aurora Resort  
-Customer Support  
-support@auroraresort.online  
+Aurora Resort
+Customer Support
+support@auroraresort.online
 https://www.auroraresort.online
 """,
-        subtype="plain"
+        charset="us-ascii"
     )
 
-    fm = FastMail(conf)
-    await fm.send_message(message)
-    
+    with smtplib.SMTP("mail.privateemail.com", 587) as server:
+        server.starttls()
+        server.login("support@auroraresort.online", "DIN_PRIVATE_EMAIL_PASSWORD")
+        server.send_message(msg)
+
 
 class User(BaseModel):
     email: str
