@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import smtplib
+from email.message import EmailMessage
 import mysql.connector
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
@@ -8,9 +10,6 @@ from jose import jwt
 from jose.exceptions import ExpiredSignatureError, JWTError
 from datetime import datetime, timedelta
 from fastapi.responses import RedirectResponse
-import smtplib
-from email.message import EmailMessage
-
 
 SECRET_KEY = "KEY"
 
@@ -20,7 +19,7 @@ DB_PASSWORD = ""
 DB_NAME = "DB"
 
 MAIL_USERNAME = "support@auroraresort.online"
-MAIL_PASSWORD = "CHANGE_THIS_EMAIL_PASSWORD"
+MAIL_PASSWORD = ""
 MAIL_FROM = "support@auroraresort.online"
 
 
@@ -39,6 +38,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -141,9 +141,7 @@ def create_verification_token(email: str):
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 
-
 async def send_verification_email(email: str, token: str):
-
     verification_link = f"https://www.auroraresort.online/py/verify-email/?token={token}"
 
     msg = EmailMessage()
