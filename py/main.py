@@ -156,22 +156,25 @@ async def send_verification_email(email: str, token: str):
     verification_link = f"https://www.auroraresort.online/py/verify-email/?token={token}"
 
     message = MessageSchema(
-        subject="Verify your Aurora Resort account",
+        subject="Email verification for Aurora Resort account",
         recipients=[email],
         body=f"""
-Hello,
+Email verification required
 
-Thank you for creating an account at Aurora Resort.
+You recently created an account at Aurora Resort.
 
-Please verify your email address by clicking the link below:
+To complete your registration, open the link below in your browser:
 
 {verification_link}
 
-If you did not create this account, you can safely ignore this message.
+If you did not create this account, no action is required.
 
-Best regards,
-Aurora Resort Support
-support@auroraresort.online
+---
+
+Aurora Resort  
+Customer Support  
+support@auroraresort.online  
+https://www.auroraresort.online
 """,
         subtype="plain"
     )
