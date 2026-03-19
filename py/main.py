@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import smtplib
-from email.message import EmailMessage
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import mysql.connector
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
@@ -17,6 +17,9 @@ DB_HOST = "localhost"
 DB_USER = "aurora_user"
 DB_PASSWORD = ""
 DB_NAME = "DB"
+
+SENDGRID_API_KEY = ""
+
 
 MAIL_USERNAME = "support@auroraresort.online"
 MAIL_PASSWORD = ""
@@ -141,37 +144,37 @@ def create_verification_token(email: str):
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
 
+
 async def send_verification_email(email: str, token: str):
+
     verification_link = f"https://www.auroraresort.online/py/verify-email/?token={token}"
 
-    msg = EmailMessage()
-    msg["Subject"] = "Email verification for Aurora Resort account"
-    msg["From"] = "support@auroraresort.online"
-    msg["To"] = email
-
-    msg.set_content(
-        f"""Email verification required
+    message = Mail(
+        from_email="support@auroraresort.online",
+        to_emails=email,
+        subject="Verify your Aurora Resort account",
+        plain_text_content=f"""
+Email verification required
 
 You recently created an account at Aurora Resort.
 
-To complete your registration, open the link below in your browser:
+Open the link below to verify your email:
 
 {verification_link}
 
 If you did not create this account, no action is required.
 
 Aurora Resort
-Customer Support
 support@auroraresort.online
-https://www.auroraresort.online
-""",
-        charset="us-ascii"
+"""
     )
 
-    with smtplib.SMTP("mail.privateemail.com", 587) as server:
-        server.starttls()
-        server.login("support@auroraresort.online", "DIN_PRIVATE_EMAIL_PASSWORD")
-        server.send_message(msg)
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        sg.send(message)
+    except Exception as e:
+        print("SendGrid error:", e)
+        raise HTTPException(status_code=500, detail="Email failed")
 
 
 class User(BaseModel):
