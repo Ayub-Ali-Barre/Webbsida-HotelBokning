@@ -235,7 +235,6 @@
   gap: 1rem;
 }
 
-/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -339,3 +338,16 @@
   gap: 1rem;
   justify-content: flex-end;
 }
+
+.form-input,
+select.form-input {
+  background: #111;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+select.form-input option {
+  background: #111;
+  color: #fff;
+}
+
