@@ -33,7 +33,6 @@ function createHotelCardHTML(hotel) {
 }
 
 
-/* ---------- MAIN INIT ---------- */
 
 async function init() {
 
@@ -69,7 +68,6 @@ async function init() {
     attachBookingButtons();
 
 
-    /* ---------- FILTERS ---------- */
 
     const filterButtons = document.querySelectorAll(".filter-btn");
 

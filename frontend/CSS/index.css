@@ -160,7 +160,7 @@ h1, h2, h3, .logo {
   display: flex;
   gap: 0.5rem;
   width: 100%;
-  max-width: 900px; /* a bit wider to accommodate larger inputs */
+  max-width: 900px; 
   border: 1px solid rgba(237, 190, 102, 0.3);
   border-radius: 8px;
 }
@@ -168,11 +168,11 @@ h1, h2, h3, .logo {
 .search .input {
   background: transparent;
   border: none;
-  padding: 1.25rem 1rem; /* larger padding for bigger box */
+  padding: 1.25rem 1rem; 
   color: white;
   flex: 1;
   outline: none;
-  font-size: 1.05rem; /* bigger placeholder / input text */
+  font-size: 1.05rem; 
   min-height: 48px;
 }
 
