@@ -114,7 +114,6 @@ async function init() {
 }
 
 
-/* ---------- BOOK BUTTON LOGIC ---------- */
 
 function attachBookingButtons() {
 

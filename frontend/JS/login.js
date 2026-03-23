@@ -19,10 +19,8 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
   if(data.status === "login success"){
 
-    // spara user i browsern
     localStorage.setItem("user", JSON.stringify(data.user));
 
-    // gå till startsidan
     window.location.href = "index.html";
 
   } else {
