@@ -341,13 +341,13 @@
 
 .form-input,
 select.form-input {
-  background: #111;
+  background: #263d70;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 select.form-input option {
-  background: #111;
+  background: #263d70;
   color: #fff;
 }
 
